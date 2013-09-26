@@ -1,6 +1,6 @@
 ## function to compute the genetic relatedness matrix from plink binary files
 
-i## *******************************
+## *******************************
 rcppcormat <- function(snpmat){
     ## require
     require(Rcpp)
@@ -52,7 +52,7 @@ rcppcormat <- function(snpmat){
 }
 
 ## compute genetic correlation matrix from plink binary files
-make_grm <- function(bedfile, bimfile, famfile, gdsFile=tempfile()) {
+make_grm <- function(bedFile, bimFile, famFile, gdsFile=tempfile()) {
 
   require(gdsfmt)
   require(SNPRelate)
