@@ -1,18 +1,10 @@
 turbo_krigr
 ===========
+Improvements for -omic Kriging R package. This README file should be merged with the original or updated to describe the package itself.
 
-  _Improvements for -omic Kriging R package._
 
 
-## Data Input  ##
-
-Test and time a few variations:
-  - Existing plink --recode + src/readgt.r
-  - Package snpStats in Bioconductor.
-  - Packages gdsfmt+SNPRelate (which leverages hdf5). 
-
-  
-### Timing results ###
+### Performance of GDS-based input ###
 
 Using WTCC T1D data set consisting of 4900 individuals and 388548 SNPs.
 
@@ -45,16 +37,3 @@ _Results are extremely favorable:_
     Wed Sep 25 15:43:39 2013 	Done.
        user  system elapsed 
       9.396   2.092  16.432 
-
-
-snpMatrix:
-
-_Looks like I'll need to upgrade my Ubuntu and R to get the latest Bioconductor to use this package._
-
-    library(snpMatrix)
-    read.plink("data/T1DCC.bed", "data/T1DCC.bim", "data/T1DCC.fam")
-
-
-plink + scan():
-
-_Ask keston for timing results._
