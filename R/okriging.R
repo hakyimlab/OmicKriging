@@ -16,7 +16,7 @@
 #' @param idtrain A vector of sample IDs which constitute the training set.
 #' @param pheno A data frame with rownames set as sample IDs and a column containing phenotype data.
 #' @param phenoname The name of the column in pheno which contains phenotype data to test.
-#' @param Xcova TODO:: What is this?
+#' @param Xcova Data frame of covariates with rownames() set to sample IDs. 
 #' 
 #' @return A dataframe with three columns: sample ID, observed phenotype Ytest, and predicted phenotype Ypred 
 #' 
