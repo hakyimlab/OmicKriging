@@ -7,31 +7,40 @@
 #'
 #' @param gdsFile File to store the Genomic Data Structure on disk for use elsewhere.
 #' @parma grmDataFile File to store the resulting GRM on disk as an R object.
+#' @param snpList A vector of SNP IDs to subset the GRM on.
+#' @param sampleList A vector of sample IDs to subset the GRM on.
 #'
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
+#'   Each entry in the matrix is of type 'double'.
 #'
 #' @include R/rcppcormat.r
 #'
-#' @keywords input
+#' @imports gdsfmt
+#' @imports SNPRelate
+#'
+#' @keywords input, GRM
 #' @examples
 #' grm <- make_grm(bedFile = "data/T1DCC.subset.bed",
 #'          bimFile = "data/T1DCC.subset.bim",
 #'          famFile = "data/T1DCC.subset.fam",
 #'          gdsFile = "~/tmp/T1DCC.subset.gds")
-make_grm <- function(gdsFile = NULL, grmDataFile = NULL) {
+#' @export
+make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleList = NULL) {
   require(gdsfmt)
   require(SNPRelate)
   source('R/rcppcormat.r')
 
   genofile <- openfn.gds(gdsFile)
-
-  ## pull sample IDs (SNP-major mode)
-  sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
-
-  ## pull genotype matrix, center, and compute the resulting correlation matrix
-  X <- read.gdsn(index.gdsn(genofile, "genotype"))
+  X <- snpgdsGetGeno(gsdobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = False)
   Xbar <- sweep(X, 2, colMeans(X), "-")
   grm <- rcppcormat(t(Xbar))
+  
+  ## pull sample IDs unless a sample list is specified
+  if(is.null(sampleList)) {
+    sample.ids <- sampleList
+  } else {
+    sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
+  }
 
   ## annotate columns and rows with sample IDs
   colnames(grm) <- sample.ids
