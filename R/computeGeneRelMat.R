@@ -31,7 +31,7 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   source('R/rcppcormat.r')
 
   genofile <- openfn.gds(gdsFile)
-  X <- snpgdsGetGeno(gsdobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = False)
+  X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
   Xbar <- sweep(X, 2, colMeans(X), "-")
   grm <- rcppcormat(t(Xbar))
   

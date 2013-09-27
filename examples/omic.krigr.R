@@ -18,30 +18,26 @@ phenoFile <- "data/T1DCC.pheno"
 pheno.name <- "PHENO"
 ncore <- 4
 
+## load some functions for testing -- ordinarily you will simple load the package
+source('R/computeGeneRelMat.R')
+source('R/dataInput.R')
+source('R/computePCA.R')
+source('R/krigrCrossValidation.R')
 
 ## load genetic data
-source('R/computeGeneRelMat.R')
-source('R/data_loading.R')
 load_gene_data(bedFile, bimFile, famFile, gdsFile)
+
+## load phenotype data
+pheno <- load_sample_data(phenoFile, main.pheno = pheno.name)
 
 ## calculate the genetic relatedness matrix
 grm <- make_grm(gdsFile = gdsFile)
-
-
-## load phenotype data
-pheno <- read.table(phenoFile, header=T)
-## subset to individuals in GRM and match the sample order
-sub.pheno.df <- subset( pheno.df, pheno.df$IID %in% colnames(grm) )
-pheno <- sub.pheno.df
-pheno[pheno.name] <- as.numeric(unlist(pheno[pheno.name]))
-rownames(pheno) <- pheno$IID
 
 ## calculate principal components
 pca <- make_PCs(gdsFile, n.core = ncore, n.top = 2)
 
 
 ## n-fold parallel cross validation
-source('R/krigrCrossValidation.R')
 result <- krigr_cross_validation(n.cores = ncore,
             corlist = list(grm),
             pheno.df = pheno,
