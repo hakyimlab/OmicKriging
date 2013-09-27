@@ -13,8 +13,9 @@ gdsFile <- "test.gds"
 bedFile <- "data/T1DCC.subset.bed"
 bimFile <- "data/T1DCC.subset.bim"
 famFile <-"data/T1DCC.subset.fam"
+phenoFile <- "data/T1DCC.pheno"
+pheno.name <- "PHENO"
 ncore <- 4
-pheno.name <- "phenotype"
 
 
 ## load genetic data
@@ -25,12 +26,12 @@ grm <- make_grm(bedFile = bedFile,
         gdsFile = gdsFile)
 
 ## load phenotype data
-genofile <- openfn.gds(gdsFile)
-sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
-pheno.val <- read.gdsn(index.gdsn(genofile, "sample.annot"))$phenotype
-pheno.df <- data.frame(IID=sample.ids)
-pheno.df[,pheno.name] <- pheno.val
-rownames(pheno.df) <- sample.ids
+pheno.df <- read.table(phenoFile, header=T)
+## subset to individuals in GRM and match the sample order
+sub.pheno.df <- subset( pheno.df, pheno.df$IID %in% colnames(grm) )
+pheno.df <- sub.pheno.df
+pheno.df[pheno.name] <- as.numeric(unlist(pheno.df[pheno.name]))
+rownames(pheno.df) <- pheno.df$IID
 
 ## n-fold parallel cross validation
 source('R/krigrCrossValidation.R')
