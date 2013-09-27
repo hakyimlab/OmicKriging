@@ -5,13 +5,76 @@ OmicKriging
 This package provides functions to generate a correlation matrix from a genetic dataset and to use this matrix to predict the phenotype of an individual by using the phenotypes of the remaining individuals through kriging. Kriging is a geostatistical method for optimal prediction or best unbiased linear prediction. It consists of predicting the value of a variable at an unobserved location as a weighted sum of the variable at observed locations. Intuitively, it works as a reverse linear regression: instead of computing correlation (univariate regression coefficients are simply scaled correlation) between a dependent variable Y and independent variables X, it uses known correlation between X and Y to predict Y.
 
 
-## Improvements ##
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Performance Improvements ##
 
 ### Performance of GDS-based input ###
 
 Using WTCC T1D data set consisting of 4900 individuals and 388548 SNPs.
 
-gdsfmt:
+Basic code:
 
     f <- function() {
       library(gdsfmt)
@@ -40,3 +103,15 @@ _Results are extremely favorable:_
     Wed Sep 25 15:43:39 2013 	Done.
        user  system elapsed 
       9.396   2.092  16.432 
+      
+     
+     
+### Performance of GDS-based GRM calculation ###
+     
+Basic code:
+    
+    f <- function() {
+    library(gdsfmt)
+    library(SNPRelate)
+    
+    }
