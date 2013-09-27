@@ -8,7 +8,8 @@
 #' @param bedFile PLINK bed file.
 #' @param bimFile PLINK bim file.
 #' @param famFile PLINK fam file.
-#' @param gdsFile File to store the Genomic Data Structure on disk.
+#' @param gdsFile File to store the Genomic Data Structure on disk. Default is
+#'   a temporary file created by tempfile().
 #'
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
 #'
@@ -20,9 +21,7 @@
 #'          bimFile = "data/T1DCC.subset.bim",
 #'          famFile = "data/T1DCC.subset.fam",
 #'          gdsFile = "~/tmp/T1DCC.subset.gds")
-make_grm <- function(bedFile, bimFile, famFile, gdsFile=tempfile()) {
-
-
+make_grm <- function(bedFile, bimFile, famFile, gdsFile = tempfile(), grmDataFile = NULL) {
   require(gdsfmt)
   require(SNPRelate)
   source('R/rcppcormat.r')
@@ -43,5 +42,27 @@ make_grm <- function(bedFile, bimFile, famFile, gdsFile=tempfile()) {
   colnames(grm) <- sample.ids
   rownames(grm) <- sample.ids
 
+  ## write out the GRM if a file is specified
+  if( !is.null(grmDataFile) ) {
+    save(grm, file = grmDataFile)
+  }
+
   return(grm)
+}
+
+#' Load genetic relatedness matrix from file.
+#'
+#' Loads a genetic relatedness matrix (GRM) from an .Rdata file produced by save()
+#' in the \code{\link{make_grm}} function. This can be used to quickly load a 
+#' GRM instead of recomputing it from PLINK binary files
+#'
+#' @param grmDataFile Location of the .Rdata file.
+#'
+#' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
+#'
+#' @keywords input
+#' 
+#' @export
+load_grm <- function(grmDataFile) {
+  return(load(grmDataFile))
 }
