@@ -1,21 +1,31 @@
+#' Run omic kriging on a set of correlation matrices and a given phenotype.
+#' 
+#' Universal kriging formula:
+#'   lambda' = ( c + X m )' iSig
+#'   m' = ( x - X' iSig c )' ( X' iSig X )^-1
+#'   m' = ( t(x) - c' iSig X ) ( X' iSig X )^-1
+#'   lambda' = (c' + m' X) iSig
+#'   x: #covariates x ntest
+#'   X: ntrain x #cov
+#'   c: ntrain x ntest
+#' 
+#' @param corlist A list of correlation matrices used in Kriging. rownames and colnames
+#'   of cor should be IID list and include idtest and idtrain.
+#' @param H2vec has weights for each RM relatednes matrix
+#' @param idtest A vector of sample IDs which constitute the test set.
+#' @param idtrain A vector of sample IDs which constitute the training set.
+#' @param pheno A data frame with rownames set as sample IDs and a column containing phenotype data.
+#' @param phenoname The name of the column in pheno which contains phenotype data to test.
+#' @param Xcova TODO:: What is this?
+#' 
+#' @return A dataframe with three columns: sample ID, observed phenotype Ytest, and predicted phenotype Ypred 
+#' 
+#' @keywords prediction
+#' 
+#' @references Cressie 1993 Statistics for Spatial Data p.154
+#'
+#' @export
 okriging <- function(idtest,idtrain=NULL,corlist,H2vec,pheno,phenoname,Xcova=NULL){
-  ## corlist contains list of correlation matrices
-  ## rownames and colnames of cor should be IID list and include idtest and idtrain
-  ## grm is genetic relatedness matrix
-  ## xrm is the expression relatedness matrix
-  ## H2vec has weights for each RM relatednes matrix
-  ## sig2 is total variability of phenotype
-  ##
-  ## universal kriging formula
-  ## lambda' = ( c + X m )' iSig
-  ## m' = ( x - X' iSig c )' ( X' iSig X )^-1
-  ## m' = ( t(x) - c' iSig X ) ( X' iSig X )^-1
-  ## lambda' = (c' + m' X) iSig
-  ## x: #covariates x ntest
-  ## X: ntrain x #cov
-  ## c: ntrain x ntest
-  ## Cressie 1993 Statistics for Spatial Data p.154
-
   idtest <- as.character(idtest)
   idtrain <- as.character(idtrain)
   nt <- length(idtest)

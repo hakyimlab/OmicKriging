@@ -1,4 +1,16 @@
-## *******************************
+#' Compute a correlation matrix.
+#'
+#' This function computes a correlation matrix using a cross product. It is
+#' implemented in C++ for performance. This function is compiled and called
+#' from R using the Rcpp package.
+#'
+#' @param snpmat A centered SNP matrix containing fields of type 'double'.
+#'
+#' @return A correlation matrix.
+#'
+#' @keywords c++, performance, correlation matrix
+#'
+#' @export
 rcppcormat <- function(snpmat){
     ## require
     require(Rcpp)
