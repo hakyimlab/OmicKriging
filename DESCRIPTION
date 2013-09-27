@@ -22,5 +22,5 @@ Depends:
 Collate:
     'rcppcormat.r'
     'computeGeneRelMat.R'
-    'krigrCrossValidation.R'
     'okriging.R'
+    'krigrCrossValidation.R'
