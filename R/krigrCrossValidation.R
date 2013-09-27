@@ -2,7 +2,7 @@
 ## TODO:: separate distinction between level of parallelism and fold level
 krigr_cross_validation <- function(n.cores, corlist, pheno.df, pheno.name) {
   ## TODO:: handling internal package references
-  source('src/okriging')
+  source('R/okriging.R')
 
   ## split into teating groups based on the number of cores available
   sample.ids <- pheno.df$IID
@@ -19,8 +19,8 @@ krigr_cross_validation <- function(n.cores, corlist, pheno.df, pheno.name) {
   p <- foreach(i=1:ncore, .combine=rbind) %dopar% {
     
     ## separate test/train for round i of the cross validation
-    test.set = group.df$sample.ids[newiddata$group.id == i]
-    train.set = group.df$sample.ids[!(newiddata$sample.id %in% test.set)]
+    test.set = group.df$sample.id[group.df$group.id == i]
+    train.set = group.df$sample.id[!(group.df$sample.id %in% test.set)]
 
     ## run kriging
     okriging(idtest=test.set,
