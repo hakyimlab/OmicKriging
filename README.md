@@ -1,7 +1,7 @@
-turbo_krigr
+OmicKriging
 ===========
-Improvements for -omic Kriging R package. This README file should be merged with the original or updated to describe the package itself.
 
+Improvements for -omic Kriging R package. This README file should be merged with the original or updated to describe the package itself.
 
 
 ### Performance of GDS-based input ###
