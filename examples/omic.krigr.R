@@ -9,10 +9,11 @@ library(inline)
 library(doMC)
 
 ## globals (can be factored out into high level config)
-gdsFile <- "test.gds"
+gdsFile <- "examples/test.gds"
 bedFile <- "data/T1DCC.subset.bed"
 bimFile <- "data/T1DCC.subset.bim"
 famFile <-"data/T1DCC.subset.fam"
+grmDataFile <- "data/T1DCC.subset.GRM.Rdata"
 phenoFile <- "data/T1DCC.pheno"
 pheno.name <- "PHENO"
 ncore <- 4
@@ -20,24 +21,30 @@ ncore <- 4
 
 ## load genetic data
 source('R/computeGeneRelMat.R')
-grm <- make_grm(bedFile = bedFile,
-        bimFile = bimFile,
-        famFile = famFile,
-        gdsFile = gdsFile)
+source('R/data_loading.R')
+load_gene_data(bedFile, bimFile, famFile, gdsFile)
+
+## calculate the genetic relatedness matrix
+grm <- make_grm(gdsFile = gdsFile)
+
 
 ## load phenotype data
-pheno.df <- read.table(phenoFile, header=T)
+pheno <- read.table(phenoFile, header=T)
 ## subset to individuals in GRM and match the sample order
 sub.pheno.df <- subset( pheno.df, pheno.df$IID %in% colnames(grm) )
-pheno.df <- sub.pheno.df
-pheno.df[pheno.name] <- as.numeric(unlist(pheno.df[pheno.name]))
-rownames(pheno.df) <- pheno.df$IID
+pheno <- sub.pheno.df
+pheno[pheno.name] <- as.numeric(unlist(pheno[pheno.name]))
+rownames(pheno) <- pheno$IID
+
+## calculate principal components
+pca <- make_PCs(gdsFile, n.core = ncore, n.top = 2)
+
 
 ## n-fold parallel cross validation
 source('R/krigrCrossValidation.R')
 result <- krigr_cross_validation(n.cores = ncore,
             corlist = list(grm),
-            pheno.df = pheno.df,
+            pheno.df = pheno,
             pheno.name = pheno.name)
 
 

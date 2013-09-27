@@ -1,15 +1,12 @@
 #' Compute genetic correlation matrix from PLINK binary files.
 #'
 #' This is a convenience function which produces a centered genetic correlation
-#' matrix from SNPs in PLINK binary files. The resulting matrix can be used 
-#' with the \code{\link{okriging}} function. It uses the Genomic Data Structure
-#' for fast I/O.
+#' matrix from SNPs loaded into a Genomic Data Structure (GDS) file. The resulting matrix can be used 
+#' with the \code{\link{okriging}} function. The GRM can be saved to disk as a
+#' R object for fast loading downstream.
 #'
-#' @param bedFile PLINK bed file.
-#' @param bimFile PLINK bim file.
-#' @param famFile PLINK fam file.
-#' @param gdsFile File to store the Genomic Data Structure on disk. Default is
-#'   a temporary file created by tempfile().
+#' @param gdsFile File to store the Genomic Data Structure on disk for use elsewhere.
+#' @parma grmDataFile File to store the resulting GRM on disk as an R object.
 #'
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
 #'
@@ -21,13 +18,11 @@
 #'          bimFile = "data/T1DCC.subset.bim",
 #'          famFile = "data/T1DCC.subset.fam",
 #'          gdsFile = "~/tmp/T1DCC.subset.gds")
-make_grm <- function(bedFile, bimFile, famFile, gdsFile = tempfile(), grmDataFile = NULL) {
+make_grm <- function(gdsFile = NULL, grmDataFile = NULL) {
   require(gdsfmt)
   require(SNPRelate)
   source('R/rcppcormat.r')
 
-  ## convert binary files to GDS file
-  snpgdsBED2GDS(bedFile, famFile, bimFile, gdsFile)
   genofile <- openfn.gds(gdsFile)
 
   ## pull sample IDs (SNP-major mode)
