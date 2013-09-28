@@ -54,6 +54,7 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   return(grm)
 }
 
+
 #' Load genetic relatedness matrix from file.
 #'
 #' Loads a genetic relatedness matrix (GRM) from an .Rdata file produced by save()
