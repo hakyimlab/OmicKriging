@@ -17,8 +17,14 @@
 #' @reference library(SNPRelate)
 #' 
 #' @export
-make_PCs <- function(gdsFile, n.core, n.top = 0) {
+make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
   gds <- openfn.gds(gdsFile)
   pca <- snpgdsPCA(gds, num.thread = n.core)
   return( pca$eigenvect )
 }
+
+make_PCs <- function(X, n.top = 2) {
+  res <- svd(X, nu = n.top)
+  return(res["u"])
+}
+

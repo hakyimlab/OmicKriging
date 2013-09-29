@@ -1,4 +1,4 @@
-### Refactor the omic kriging using the GDS format
+ ## Refactor the omic kriging using the GDS format
 
 ## dependencies
 library(gdsfmt)
