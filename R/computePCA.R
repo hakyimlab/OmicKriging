@@ -23,8 +23,19 @@ make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
   return( pca$eigenvect )
 }
 
-make_PCs <- function(X, n.top = 2) {
-  res <- svd(X, nu = n.top)
+## SVD based PCA. Assuming that the matrix X is a valid correlation matrix with rownames as sample names.
+make_PCs_svd <- function(X, n.top = 2) {
+  res <- La.svd(X, nu = n.top)
+  rownames(res) <- rownames(X)
+  return(res["u"])
+}
+
+## IRLBA based SVD -- supposedly the state of the art.
+make_PCs_irlba <- function(X, n.top = 2) {
+  require(irlba)
+  
+  res <- irlba(X, nu = n.top)
+  rownames(res) <- rownames(X)
   return(res["u"])
 }
 
