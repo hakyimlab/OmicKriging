@@ -3,8 +3,6 @@
 ## dependencies
 library(gdsfmt)
 library(SNPRelate)
-library(Rcpp)
-library(RcppEigen)
 library(inline)
 library(doMC)
 
@@ -16,10 +14,10 @@ famFile <-"data/T1DCC.subset.fam"
 grmDataFile <- "data/T1DCC.subset.GRM.Rdata"
 phenoFile <- "data/T1DCC.pheno"
 pheno.name <- "PHENO"
-ncore <- 4
+ncore <- 12
 
 ## load some functions for testing -- ordinarily you will simple load the package
-source('R/computeGeneRelMat.R')
+source('R/gdsGeneRelMat.R')
 source('R/dataInput.R')
 source('R/computePCA.R')
 source('R/krigrCrossValidation.R')
@@ -31,19 +29,21 @@ load_gene_data(bedFile, bimFile, famFile, gdsFile)
 pheno <- load_sample_data(phenoFile, main.pheno = pheno.name)
 
 ## calculate the genetic relatedness matrix
-grm <- make_grm(gdsFile = gdsFile)
+system.time(grm <- make_grm_gds(gdsFile = gdsFile, n.core = ncore))
 
-## calculate principal components
-pca <- make_PCs(gdsFile, n.core = ncore, n.top = 2)
+## calculate principal components for use as covariates
+system.time(pca <- make_PCs_irlba(grm, n.top = 2))
 
 
 ## n-fold parallel cross validation
-result <- krigr_cross_validation(n.cores = ncore,
-            corlist = list(grm),
+result <- krigr_cross_validation(corlist = list(grm),
             pheno.df = pheno,
-            pheno.name = pheno.name)
+            pheno.name = pheno.name,
+            Xcovmat = pca,
+            H2vec = 1,
+            ncore = 12,
+            nfold = 10)
 
 
-## summarize results: prediction and performance functions from ROCR
 
 
