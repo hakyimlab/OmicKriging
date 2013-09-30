@@ -16,7 +16,7 @@ make_grm_gds <- function(gdsFile, grmDataFile = NULL, sampleList = NULL, snpList
   }
 
   ## pull sample IDs unless a sample list is specified
-  if(!is.null(sampleList)) {
+  ed.gdsn(index.gdsn(genofile, "sample.id"))f(!is.null(sampleList)) {
     sample.ids <- sampleList
   } else {
     sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))

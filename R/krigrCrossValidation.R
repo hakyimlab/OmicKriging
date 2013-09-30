@@ -1,5 +1,35 @@
-## n-core, n-fold cross validation routine for kriging
-## TODO:: separate distinction between level of parallelism and fold level
+#' Multithreaded cross validation routine for Omic Kriging.
+#'
+#' This is a flexible cross validation routine which wraps the Omic Kriging
+#' calculation. The user can specify the size of the test set, all the way to
+#' "Leave One Out" cross validation. Additionally, all relevant  parameters in the
+#' \code{\link{okriging}} function are exposed. This function uses the doMC
+#' package to distribute computation over multiple cores.
+#'
+#' @param corlist A list of correlation matrices used in Kriging. rownames and colnames
+#'   of cor should be IID list and include idtest and idtrain.
+#' @param H2vec has weights for each RM relatednes matrix
+#' @param pheno A data frame with rownames set as sample IDs and a column containing phenotype data.
+#' @param phenoname The name of the column in pheno which contains phenotype data to test.
+#' @param Xcovamat Data frame of covariates with rownames() set to sample IDs. 
+#' @param nfold Select the number of cross validation rounds to run. The value "LOOCV"
+#'   will run one round of cross validation for each sample in your dataset.
+#'   The value "ncore" will set the test set size such that a single round
+#'   runs on each core specified in the ncore option. Any numeric value
+#'   will be set to the test size. Default runs 10 rounds of cross validation.
+#' @param ncore The number of cores available to distribute computaition across
+#'    If a numeric value is supplied, that number of cores is registered. If the
+#'    value "all" is supplied, all available cores are used. 
+#' @param AUC Boolean value which sets whether or not a summary of the predictive
+#'    predictive performance is generated.
+#'
+#' @return  A dataframe with three columns: sample ID, observed phenotype Ytest, and predicted phenotype Ypred
+#'
+#' @keywords prediction
+#'
+#' @imports doMC
+#' @imports ROCR
+#' @export
 krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NULL, H2vec, nfold = 10, ncore = "all", AUC = FALSE, ...) {
   ## TODO:: handling internal package references
   source('/nas40t0/keston/PS2/tempo/R/okriging.R')

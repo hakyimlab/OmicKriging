@@ -14,23 +14,63 @@
 #'
 #' @keywords covariate, PCA, GRM
 #'
+#' @imports SNPRelate
+#'
 #' @reference library(SNPRelate)
 #' 
 #' @export
 make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
+  requrire(SNPRelate)
+
   gds <- openfn.gds(gdsFile)
   pca <- snpgdsPCA(gds, num.thread = n.core)
+  rownames(pca$eigenvect) <- read.gdsn(index.gdsn(gds, "sample.id"))
   return( pca$eigenvect )
 }
 
-## SVD based PCA. Assuming that the matrix X is a valid correlation matrix with rownames as sample names.
+#' Run Principal Component Analysis (PCA) using base R svd() function.
+#'
+#' A simple wrapper around the base R svd() function which returns the top N
+#' eigenvectors of a matrix. Use this function to generate covariates for use
+#' with the \code{\link{okriging}} or \code{\link{krigr_cross_validation}}
+#' functions.
+#'
+#' @param X A correlation matrix.
+#' @param n.top Number of top principal compenents to return 
+#'
+#' @return A matrix of Principal Components of dimension (# of samples) x
+#'   (n.top). As expected, eigenvectors are ordered by eigenvalue. Rownames
+#'   are given as sample IDs.
+#'
+#' @keywords covariate, PCA, GRM
+#' @export
 make_PCs_svd <- function(X, n.top = 2) {
   res <- La.svd(X, nu = n.top)
   rownames(res) <- rownames(X)
   return(res["u"])
 }
 
-## IRLBA based SVD -- supposedly the state of the art.
+#' Run Principal Component Analysis (PCA) using the irlba package.
+#'
+#' A simple wrapper around the irlba() function which computes a partial SVD
+#' efficiently. This function's run time depends on the number of eigenvectors
+#' requested but scales well. Use this function to generate covariates for use
+#' with the \code{\link{okriging}} or \code{\link{krigr_cross_validation}}
+#' functions.
+#'
+#' @param X A correlation matrix.
+#' @param n.top Number of top principal compenents to return 
+#'
+#' @return A matrix of Principal Components of dimension (# of samples) x
+#'   (n.top). As expected, eigenvectors are ordered by eigenvalue. Rownames
+#'   are given as sample IDs.
+#'
+#' @keywords covariate, PCA, GRM
+#'
+#' @reference library(irlba)
+#'
+#' @imports irlba
+#' @export
 make_PCs_irlba <- function(X, n.top = 2) {
   require(irlba)
   
