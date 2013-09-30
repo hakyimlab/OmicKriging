@@ -24,7 +24,8 @@
   \item{phenoname}{The name of the column in pheno which
   contains phenotype data to test.}
 
-  \item{Xcova}{TODO:: What is this?}
+  \item{Xcova}{Data frame of covariates with rownames() set
+  to sample IDs.}
 }
 \value{
   A dataframe with three columns: sample ID, observed

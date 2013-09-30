@@ -24,3 +24,6 @@ Collate:
     'computeGeneRelMat.R'
     'okriging.R'
     'krigrCrossValidation.R'
+    'computePCA.R'
+    'dataInput.R'
+    'gdsGeneRelMat.R'

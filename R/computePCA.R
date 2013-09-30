@@ -14,9 +14,9 @@
 #'
 #' @keywords covariate, PCA, GRM
 #'
-#' @imports SNPRelate
+#' @import SNPRelate
 #'
-#' @reference library(SNPRelate)
+#' @references library(SNPRelate)
 #' 
 #' @export
 make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
@@ -67,15 +67,15 @@ make_PCs_svd <- function(X, n.top = 2) {
 #'
 #' @keywords covariate, PCA, GRM
 #'
-#' @reference library(irlba)
+#' @references library(irlba)
 #'
-#' @imports irlba
+#' @import irlba
 #' @export
 make_PCs_irlba <- function(X, n.top = 2) {
   require(irlba)
   
   res <- irlba(X, nu = n.top)
-  rownames(res) <- rownames(X)
-  return(res["u"])
+  rownames(res$u) <- rownames(X)
+  return(res$u)
 }
 

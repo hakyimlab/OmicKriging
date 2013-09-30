@@ -27,8 +27,8 @@
 #'
 #' @keywords prediction
 #'
-#' @imports doMC
-#' @imports ROCR
+#' @import doMC
+#' @import ROCR
 #' @export
 krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NULL, H2vec, nfold = 10, ncore = "all", AUC = FALSE, ...) {
   ## TODO:: handling internal package references

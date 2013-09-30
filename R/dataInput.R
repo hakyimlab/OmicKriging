@@ -13,8 +13,8 @@
 #'
 #' @return None. The GDS file is stored on disk.
 #'
-#' @imports gdsfmt
-#' @imports SNPRelate
+#' @import gdsfmt
+#' @import SNPRelate
 #'
 #' @keywords input
 #'

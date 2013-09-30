@@ -6,7 +6,7 @@
 #' R object for fast loading downstream.
 #'
 #' @param gdsFile File to store the Genomic Data Structure on disk for use elsewhere.
-#' @parma grmDataFile File to store the resulting GRM on disk as an R object.
+#' @param grmDataFile File to store the resulting GRM on disk as an R object.
 #' @param snpList A vector of SNP IDs to subset the GRM on.
 #' @param sampleList A vector of sample IDs to subset the GRM on.
 #'
@@ -15,8 +15,8 @@
 #'
 #' @include R/rcppcormat.r
 #'
-#' @imports gdsfmt
-#' @imports SNPRelate
+#' @import gdsfmt
+#' @import SNPRelate
 #'
 #' @keywords input, GRM
 #' @examples
