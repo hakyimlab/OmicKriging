@@ -9,65 +9,6 @@ This package provides functions to generate a correlation matrix from a genetic 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Performance Improvements ##
 
 ### Performance of GDS-based input ###
@@ -108,10 +49,26 @@ _Results are extremely favorable:_
      
 ### Performance of GDS-based GRM calculation ###
      
-Basic code:
-    
-    f <- function() {
-    library(gdsfmt)
-    library(SNPRelate)
-    
-    }
+Smaller dataset for testing: 4900 samples, 80340 SNPs
+
+    > grm <- make_grm_gds(gdsFile = gdsFile, n.core = ncore)
+    > system.time(grm <- make_grm_gds(gdsFile = gdsFile, n.core = ncore))
+        user  system elapsed
+        952.075   0.509  98.331 
+
+
+
+### Performance of irlba-based SVD calculation ###
+
+This particular algorithm computes partial SVDs efficiently. The time depends on the number of top eigenvectors you request, but seems to scale quite favorably.
+
+    > dim(grm)
+    [1] 4900 4900
+    > system.time(pca <- make_PCs_irlba(grm, n.top = 2))
+        user  system elapsed 
+        5.013   0.000   5.027
+        
+    > system.time(pca <- make_PCs_irlba(grm, n.top = 10))
+        user  system ela psed 
+        7.002   0.014   7.036 
+
