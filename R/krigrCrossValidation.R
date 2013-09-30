@@ -1,56 +1,93 @@
-#' Run n-fold cross validated kriging across n-cores.
-#'
-#' For now, this is a placeholder function. What is really needed is a function
-#' which can run across multiple cores with an arbitrary number of test/train
-#' groups, i.e. decouple the n-core and n-fold variables. At its core,
-#' this function calls \code{\link{okriging}}.
-#'
-#' @param n.core The number of cores used and test sets the data will be split into.
-#' @param corlist A list of correlation matrices. Colnames and rownames must be
-#'   sample IDs, and must match betweenn matrices.
-#' @param pheno.df A data frame of sample IDs and their corresponding phenotypes. The
-#'   data frame must have rownames() set to sample IDs.
-#' @param pheno.name The name of the column in the pheno.df which is the phenotype
-#'   being predicted.
-#' 
-#' @return A data frame with a column for each: sample IDs, observed phenotypes,
-#'   and predicted phenotypes.
-#' 
-#' @include R/okriging.R
-#'
-#' @keywords prediction, cross validation
-#' @export
-krigr_cross_validation <- function(n.cores, corlist, pheno.df, pheno.name) {
+## n-core, n-fold cross validation routine for kriging
+## TODO:: separate distinction between level of parallelism and fold level
+krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NULL, H2vec, nfold = 10, ncore = "all", AUC = FALSE, ...) {
   ## TODO:: handling internal package references
-  source('R/okriging.R')
+  source('/nas40t0/keston/PS2/tempo/R/okriging.R')
+  ## dependencies
+  require(doMC)
 
-  ## split into teating groups based on the number of cores available
+  ## split into groups based on the number of cores available
   sample.ids <- pheno.df$IID
   n.samples <- length(sample.ids)
-  groups <- 1:ncore
+
+  ## detect cores  
+  if(ncore == "all") {
+    ncore <- detectCores()
+    registerDoMC(cores = ncore)
+    } else {
+    registerDoMC(cores = ncore)
+    }
+  
+  ## set n-fold  
+  if(nfold == "LOOCV") {
+    nfold <- n.samples
+    } else if(is.numeric(nfold)) {
+    nfold <- nfold
+    } else if(nfold == "ncore") {
+    nfold <- ncore
+    } else {
+    nfold <- 10
+    }
+   
+  ## print core and fold numbers
+  '%&%' <- function(a, b) paste(a, b, sep="")
+  
+  if(nfold == "LOOCV") {
+    print('Set leave-one-out cross-validation...')
+    } else {
+    print('Set '%&% nfold %&%'x cross-validation...')
+    }
+  
+  print('With '%&% ncore %&%' logical cores...') 
+  
+  ## create groups
+  groups <- 1:nfold
   rand.groups <- sample(groups, n.samples, replace=T)
   group.df <- data.frame(rand.groups, sample.ids)
   colnames(group.df) <- c("group.id", "sample.id")
 
-  ## setup parallel environment
-  registerDoMC(cores = ncore)
-
+  print('Running OmicKriging...')
+  
   ## running kriging routine on each core for each testing group
-  p <- foreach(i=1:ncore, .combine=rbind) %dopar% {
+  time <- system.time(
+  res <- foreach(i = 1:nfold, .combine = rbind) %dopar% {
     
     ## separate test/train for round i of the cross validation
-    test.set = group.df$sample.id[group.df$group.id == i]
-    train.set = group.df$sample.id[!(group.df$sample.id %in% test.set)]
-
+    test.set <- group.df$sample.id[group.df$group.id == i]
+    train.set <- group.df$sample.id[!(group.df$sample.id %in% test.set)]
+    
     ## run kriging
-    okriging(idtest=test.set,
-      idtrain=train.set,
-      corlist=corlist,
-      H2vec=0.5, #?
-             pheno=pheno.df,
-             phenoname=pheno.name)
+    if(!is.null(Xcovamat)) {
+      okriging(idtest = test.set, idtrain = train.set, corlist = corlist, 
+      H2vec = H2vec, pheno = pheno.df, phenoname = pheno.name, Xcova = Xcovamat)
+      } else {
+      okriging(idtest = test.set, idtrain = train.set, corlist = corlist, 
+      H2vec = H2vec, pheno = pheno.df, phenoname = pheno.name)
+
+      }
+    }
+  )
+ 
+  gc()
+
+  ## summary
+  if(AUC) {
+    auc <- function(predtype,phenotype){
+      require(ROCR)
+      pred <- prediction(predtype,phenotype)
+      perf <- performance(pred,"auc")
+      aucval <- perf@y.values
+      return(aucval)
+      }
+    print('Area under the ROC curve: '%&% auc(res$Ypred,res$Ytest))
+    sum <- summary(lm(Ytest ~ Ypred, data = res))
+    print(sum)
+    } else {
+    sum <- summary(lm(Ytest ~ Ypred, data = res))
+    print(sum)
     }
 
-  return(p)
+  print('Finished OmicKriging in '%&% time[3] %&%' seconds')
+  return(res)
 
 }
