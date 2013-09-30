@@ -6,7 +6,7 @@ make_grm_gds <- function(gdsFile, grmDataFile = NULL, sampleList = NULL, snpList
 
   genofile <- openfn.gds(gdsFile)
   ## compute the genetic covariance matrix
-  gcov <- snpgdsPCA(genofile, sample.id = sampleList, snp.id = snpList, num.thread = n.core, genmat.only = TRUE)
+  gcov <- snpgdsPCA(genofile, sample.id = sampleList, snp.id = snpList, num.thread = n.core, genmat.only = TRUE, verbose = FALSE)
   ## make correlation matrix from covariance matrix
   gcor <- cov2cor(gcov$genmat)
 
@@ -14,6 +14,16 @@ make_grm_gds <- function(gdsFile, grmDataFile = NULL, sampleList = NULL, snpList
   if(!is.null(grmDataFile)) {
     save(gcor, file = grmDataFile)
   }
+
+  ## pull sample IDs unless a sample list is specified
+  if(!is.null(sampleList)) {
+    sample.ids <- sampleList
+  } else {
+    sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
+  }
+  ## add sample IDs to GRM object
+  rownames(gcor) <-  sample.ids
+  colnames(gcor) <-  sample.ids
 
   return(gcor)
 }
