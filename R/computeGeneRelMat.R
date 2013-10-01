@@ -3,11 +3,11 @@
 #' This is a convenience function which produces a centered genetic correlation
 #' matrix from SNPs loaded into a Genomic Data Structure (GDS) file. The resulting matrix can be used 
 #' with the \code{\link{okriging}} function. The GRM can be saved to disk as a
-#' R object for fast loading downstream. The calculation first subtracts allele
-#' dosage (i.e. column) means from each field, and sets missing values to column
-#' mean (i.e. 0).
+#' R object for fast loading downstream. The genotype  matrix is z-score normalized (i.e.
+#' column means are centered and column variance is divided out to unit variance)
+#' prior to calculating the correlation matrix.
 #'
-#' @param gdsFile File to store the Genomic Data Structure on disk for use elsewhere.
+#' @param gdsFile File holding the GDS from which to pull the raw genotype matrix.
 #' @param grmDataFile File to store the resulting GRM on disk as an R object.
 #' @param snpList A vector of SNP IDs to subset the GRM on.
 #' @param sampleList A vector of sample IDs to subset the GRM on.
@@ -37,8 +37,9 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
   ## set missing values (int 3) to properly missing
   X[X == 3] <- NA
-  Xbar <- sweep(X, 2, colMeans(X, na.rm = TRUE), "-")
-  ## sweep out column variance
+  ## z-normalize matrix (sweep out column means, and divide out column matrices)
+  X <- scale(X, center = TRUE, scale = TRUE)
+  ## set missing values to new column mean, i.e. 0.0
   X[X == NA] <- 0.0
   grm <- rcppcormat(t(Xbar))
   
