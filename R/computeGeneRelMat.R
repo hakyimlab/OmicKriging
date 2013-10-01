@@ -33,6 +33,7 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   source('R/rcppcormat.r')
 
   genofile <- openfn.gds(gdsFile)
+  ## pull an integer dosage matrix from the GDS. Rows are samples, columns are SNPs, and missing values are int 3.
   X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
   ## set missing values (int 3) to properly missing
   X[X == 3] <- NA
