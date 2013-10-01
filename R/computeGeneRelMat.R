@@ -8,7 +8,7 @@
 #' prior to calculating the correlation matrix.
 #'
 #' @param gdsFile File holding the GDS from which to pull the raw genotype matrix.
-#' @param grmDataFile File to store the resulting GRM on disk as an R object.
+#' @param grmFilePrefix File to store the resulting GRM on disk as an R object.
 #' @param snpList A vector of SNP IDs to subset the GRM on.
 #' @param sampleList A vector of sample IDs to subset the GRM on.
 #'
@@ -27,10 +27,11 @@
 #'          famFile = "data/T1DCC.subset.fam",
 #'          gdsFile = "~/tmp/T1DCC.subset.gds")
 #' @export
-make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleList = NULL) {
+make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampleList = NULL) {
   require(gdsfmt)
   require(SNPRelate)
   source('R/rcppcormat.r')
+  source('R/grm_io.R')
 
   genofile <- openfn.gds(gdsFile)
   ## pull an integer dosage matrix from the GDS. Rows are samples, columns are SNPs, and missing values are int 3.
@@ -55,27 +56,11 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   rownames(grm) <- sample.ids
 
   ## write out the GRM if a file is specified
-  if( !is.null(grmDataFile) ) {
-    save(grm, file = grmDataFile)
+  if( !is.null(grmFilePrefix) ) {
+    writeGRMBin(X = grm, prefix = grmFilePrefix)
   }
 
   return(grm)
 }
 
 
-#' Load genetic relatedness matrix from file.
-#'
-#' Loads a genetic relatedness matrix (GRM) from an .Rdata file produced by save()
-#' in the \code{\link{make_grm}} function. This can be used to quickly load a 
-#' GRM instead of recomputing it from PLINK binary files
-#'
-#' @param grmDataFile Location of the .Rdata file.
-#'
-#' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
-#'
-#' @keywords input
-#' 
-#' @export
-load_grm <- function(grmDataFile) {
-  return(load(grmDataFile))
-}
