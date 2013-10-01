@@ -1,9 +1,9 @@
 #' Read the GRM binary file.
 #'
-#' Function provided partially by GCTA maintainers for accessing their binary
-#' GRM format introduced recently. The GRM is stored as a vector of numerics
-#' which correspond to the lower triangular elements. We simply read these, pull
-#' the diagonal elements, and inflate this into a full symmetric matrix. We add
+#' Function provided by GCTA maintainers (modified slightly) for accessing their
+#' recently introduced binary GRM format. The GRM is stored as a vector of numerics
+#' which correspond to the lower triangular elements including the diagonal. We simply read these, pull
+#' the diagonal elements, and inflate them into a full symmetric matrix. We add
 #' sample IDs to colnames and rownames for compatibility with other Kriging 
 #' functions.
 #'
@@ -19,6 +19,7 @@ ReadGRMBin <- function(prefix, size = 4){
   sum_i <- function(i){
     return(sum(1:i))
   }
+
   ## open file connections and read in data
   BinFileName <- paste(prefix,".grm.bin",sep="")
   NFileName <- paste(prefix,".grm.N.bin",sep="")
@@ -32,6 +33,10 @@ ReadGRMBin <- function(prefix, size = 4){
   ## read in the number of SNPs used to calculate the GRM (does not appear to work)
   N <- readBin(NFile, n=1, what=numeric(0), size=size)
   i <- sapply(1:n, sum_i)
+  
+  ## clean up file connections
+  close(BinFile)
+  close(NFile)
 
   ## pull apart diagonal and lower triagular elements
   diag.elem <- grm[i]
@@ -45,24 +50,65 @@ ReadGRMBin <- function(prefix, size = 4){
   ## add sample IDs to rownames and colnames
   rownames(X) <- id$V2
   colnames(X) <- id$V2
-  
-  ## clean up file connections
-  close(BinFile)
-  close(NFile)
 
   return(X)
 }
 
-#' Write GRM binary files
+#' Write GRM binary files.
 #'
+#' Function to write a binary GRM format recently introduced by GCTA. It takes
+#' a correlation matrix as used by other Kriging functions, and writes three
+#' files: binary file for storing the diagonal + lower triangular elements, a
+#' text file for sample IDs, and a binary file storing the number of SNPs used
+#' in the correlation matrix calculation.
 #'
+#' @param X Correlation matrix with rownames and colnames as sample IDs.
+#' @param prefix Base file path and names for the three output files.
+#' @param n.snps Number of SNPs used in correlation matrix calculation. Default is 0.0.
+#' @param size Number of bytes to write for each value. Default is 4
 #'
+#' @return None. Though side effects are writing three files as described above.
 #'
+#' @references http://www.complextraitgenomics.com/software/gcta/estimate_grm.html
 #'
-#'
-writeGRMBin <- function {
+#' @export
+writeGRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
 
+  sum_i <- function(i){
+    return(sum(1:i))
+  }
 
+  ## file connections
+  NFileName <- paste(prefix,".grm.N.bin",sep="")
+  IDFileName <- paste(prefix,".grm.id",sep="")
+  BinFileName <- paste(prefix,".grm.bin",sep="")
+
+  ## pull sample ids and dimension of GRM
+  id <- rownames(X)
+  n <- length(id)
+
+  ## pull diagonal elements
+  diag.elem <- diag(X)
+
+  ## pull lower triangular elements
+  off.diag.elem <- X[lower.tri(X, diag=FALSE)]
+
+  ## collapse GRM into vector
+  i <- sapply(1:n, sum_i)
+  collapsed.grm <- vector(mode="numeric", length = n*(n+1)/2)
+  collapsed.grm[i] <- diag.elem
+  collapsed.grm[-i] <- off.diag.elem
+
+  ## write binary files
+  BinFile <- file(BinFileName, "wb")
+  NFile <- file(NFileName, "wb")
+  writeBin(con = BinFile, collapsed.grm, size = size)
+  writeBin(con = NFile, n.snps, size = size )
+  close(BinFile)
+  close(NFile)
+
+  ## write sample ID file -- we are dropping sample family IDs here
+  write.table(cbind(id, id), file = IDFileName)
 
 }
 
