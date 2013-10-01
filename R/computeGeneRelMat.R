@@ -38,7 +38,7 @@ make_grm <- function(gdsFile = NULL, grmDataFile = NULL, snpList = NULL, sampleL
   ## set missing values (int 3) to properly missing
   X[X == 3] <- NA
   Xbar <- sweep(X, 2, colMeans(X, na.rm = TRUE), "-")
-  X[X == 3] <- 0.0
+  X[X == NA] <- 0.0
   grm <- rcppcormat(t(Xbar))
   
   ## pull sample IDs unless a sample list is specified
