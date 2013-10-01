@@ -16,11 +16,6 @@ phenoFile <- "data/T1DCC.pheno"
 pheno.name <- "PHENO"
 ncore <- 12
 
-## load some functions for testing -- ordinarily you will simple load the package
-source('R/gdsGeneRelMat.R')
-source('R/dataInput.R')
-source('R/computePCA.R')
-source('R/krigrCrossValidation.R')
 
 ## load genetic data
 load_gene_data(bedFile, bimFile, famFile, gdsFile)
