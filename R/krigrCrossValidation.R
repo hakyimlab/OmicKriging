@@ -4,7 +4,8 @@
 #' calculation. The user can specify the size of the test set, all the way to
 #' "Leave One Out" cross validation. Additionally, all relevant  parameters in the
 #' \code{\link{okriging}} function are exposed. This function uses the doMC
-#' package to distribute computation over multiple cores.
+#' package to distribute computation over multiple cores. If the phenotype is 
+#' case/control, a ROCR AUC and GLM analysis is run and the results printed to screen.
 #'
 #' @param corlist A list of correlation matrices used in Kriging. rownames and colnames
 #'   of cor should be IID list and include idtest and idtrain.
@@ -20,8 +21,6 @@
 #' @param ncore The number of cores available to distribute computaition across
 #'    If a numeric value is supplied, that number of cores is registered. If the
 #'    value "all" is supplied, all available cores are used. 
-#' @param AUC Boolean value which sets whether or not a summary of the predictive
-#'    predictive performance is generated.
 #'
 #' @return  A dataframe with three columns: sample ID, observed phenotype Ytest, and predicted phenotype Ypred
 #'
@@ -32,7 +31,7 @@
 #' @import doMC
 #' @import ROCR
 #' @export
-krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NULL, H2vec, nfold = 10, ncore = "all", AUC = FALSE, ...) {
+krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NULL, H2vec, nfold = 10, ncore = "all", ...) {
   ## TODO:: handling internal package references
   source('R/okriging.R')
   ## dependencies
@@ -103,16 +102,17 @@ krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NUL
   gc()
 
   ## summary
-  if(AUC) {
-    auc <- function(predtype,phenotype){
+  if(length(unique(res$Ytest)) == 2) {
+    auc <- function(predtype, phenotype){
       require(ROCR)
-      pred <- prediction(predtype,phenotype)
-      perf <- performance(pred,"auc")
+      pred <- prediction(predtype, phenotype)
+      perf <- performance(pred, "auc")
       aucval <- perf@y.values
       return(aucval)
       }
-    print('Area under the ROC curve: '%&% auc(res$Ypred,res$Ytest))
-    sum <- summary(lm(Ytest ~ Ypred, data = res))
+    print('Summary of binary phenotype...')
+    print('Area under the ROC curve: '%&% auc(res$Ypred,res$Ytest) %&%'...')
+    sum <- summary(glm(Ytest ~ Ypred, data = res, family = binomial))
     print(sum)
     } else {
     sum <- summary(lm(Ytest ~ Ypred, data = res))
