@@ -16,6 +16,7 @@
 #'   Each entry in the matrix is of type 'double'.
 #'
 #' @include R/rcppcormat.r
+#' @include R/grm_io.R
 #'
 #' @import gdsfmt
 #' @import SNPRelate
