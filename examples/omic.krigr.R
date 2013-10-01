@@ -15,6 +15,10 @@ grmDataFile <- "data/T1DCC.subset.GRM.Rdata"
 phenoFile <- "data/T1DCC.pheno"
 pheno.name <- "PHENO"
 ncore <- 12
+set.seed(42)
+
+
+
 
 
 ## load genetic data
