@@ -39,7 +39,7 @@ make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
   X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
   ## set missing values (int 3) to properly missing
   X[X == 3] <- NA
-  ## z-normalize matrix (sweep out column means, and divide out column matrices)
+  ## z-normalize matrix (sweep out column means, and divide out column standard deviations)
   X <- scale(X, center = TRUE, scale = TRUE)
   ## set missing values to new column mean, i.e. 0.0
   X[X == NA] <- 0.0
