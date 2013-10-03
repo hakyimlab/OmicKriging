@@ -112,7 +112,11 @@ krigr_cross_validation <- function(corlist, pheno.df, pheno.name, Xcovamat = NUL
       }
     print('Summary of binary phenotype...')
     print('Area under the ROC curve: '%&% auc(res$Ypred,res$Ytest) %&%'...')
-    sum <- summary(glm(Ytest ~ Ypred, data = res, family = binomial))
+    convertpheno <- res$Ytest
+    uniconvertpheno <- unique(convertpheno)
+    convertpheno[convertpheno == uniconvertpheno[2]] = 0
+    convertpheno[convertpheno == uniconvertpheno[1]] = 1
+    sum <- summary(glm(convertpheno ~ res$Ypred, family = binomial))
     print(sum)
     } else {
     sum <- summary(lm(Ytest ~ Ypred, data = res))
