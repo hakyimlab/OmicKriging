@@ -42,8 +42,8 @@ make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
   ## z-normalize matrix (sweep out column means, and divide out column standard deviations)
   X <- scale(X, center = TRUE, scale = TRUE)
   ## set missing values to new column mean, i.e. 0.0
-  X[X == NA] <- 0.0
-  grm <- rcppcormat(t(Xbar))
+  X[is.na(X)] <- 0.0
+  grm <- rcppcormat(t(X))
   
   ## pull sample IDs unless a sample list is specified
   if(is.null(sampleList)) {
