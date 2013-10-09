@@ -46,7 +46,7 @@ make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
   grm <- rcppcormat(t(Xbar))
   
   ## pull sample IDs unless a sample list is specified
-  if(is.null(sampleList)) {
+  if(!is.null(sampleList)) {
     sample.ids <- sampleList
   } else {
     sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
