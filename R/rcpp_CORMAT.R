@@ -9,8 +9,6 @@
 #' @return A correlation matrix.
 #'
 #' @keywords c++, performance, correlation matrix
-#'
-#' @export
 rcppcormat <- function(snpmat){
     ## require
     require(Rcpp)
