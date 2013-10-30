@@ -15,7 +15,7 @@
 #' @references http://www.complextraitgenomics.com/software/gcta/estimate_grm.html
 #'
 #' @export
-ReadGRMBin <- function(prefix, size = 4){
+read_GRMBin <- function(prefix, size = 4){
   sum_i <- function(i){
     return(sum(1:i))
   }
@@ -72,7 +72,7 @@ ReadGRMBin <- function(prefix, size = 4){
 #' @references http://www.complextraitgenomics.com/software/gcta/estimate_grm.html
 #'
 #' @export
-writeGRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
+write_GRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
 
   sum_i <- function(i){
     return(sum(1:i))
