@@ -20,10 +20,12 @@ License: GPL (>=3)
 Depends:
     R(>= 2.15.1)
 Collate:
-    'rcppcormat.r'
-    'computeGeneRelMat.R'
-    'okriging.R'
-    'krigrCrossValidation.R'
-    'computePCA.R'
-    'dataInput.R'
-    'gdsGeneRelMat.R'
+    'grm_IO.R'
+    'input_pheno_GT.R'
+    'omic_KRIGR.R'
+    'krigr_CV.R'
+    'grm_io.R'
+    'make_GRM.R'
+    'make_GXM.R'
+    'make_PCA.R'
+    'rcpp_CORMAT.R'
