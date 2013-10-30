@@ -2,24 +2,24 @@
 \alias{krigr_cross_validation}
 \title{Multithreaded cross validation routine for Omic Kriging.}
 \usage{
-  krigr_cross_validation(corlist, pheno.df, pheno.name,
-    Xcovamat = NULL, H2vec, nfold = 10, ncore = "all",
-    AUC = FALSE, ...)
+  krigr_cross_validation(cor.list, pheno.df, pheno.id = 1,
+    h2.vec, covar.mat = NULL, nfold = 10, ncore = "all",
+    verbose = FALSE, ...)
 }
 \arguments{
   \item{corlist}{A list of correlation matrices used in
   Kriging. rownames and colnames of cor should be IID list
   and include idtest and idtrain.}
 
-  \item{H2vec}{has weights for each RM relatednes matrix}
+  \item{h2.vec}{has weights for each RM relatednes matrix}
 
-  \item{pheno}{A data frame with rownames set as sample IDs
-  and a column containing phenotype data.}
+  \item{pheno.df}{A data frame with rownames set as sample
+  IDs and a column containing phenotype data.}
 
-  \item{phenoname}{The name of the column in pheno which
+  \item{pheno.id}{The name of the column in pheno which
   contains phenotype data to test.}
 
-  \item{Xcovamat}{Data frame of covariates with rownames()
+  \item{covar.mat}{Data frame of covariates with rownames()
   set to sample IDs.}
 
   \item{nfold}{Select the number of cross validation rounds
@@ -35,9 +35,8 @@
   number of cores is registered. If the value "all" is
   supplied, all available cores are used.}
 
-  \item{AUC}{Boolean value which sets whether or not a
-  summary of the predictive predictive performance is
-  generated.}
+  \item{verbose}{Report rounds on cross validation on
+  standard out.}
 }
 \value{
   A dataframe with three columns: sample ID, observed
@@ -50,7 +49,11 @@
   cross validation. Additionally, all relevant parameters
   in the \code{\link{okriging}} function are exposed. This
   function uses the doMC package to distribute computation
-  over multiple cores.
+  over multiple cores. If the phenotype is case/control, a
+  ROCR AUC and GLM analysis is run and the results printed
+  to screen.
 }
-\keyword{prediction}
+\keyword{cross}
+\keyword{prediction,}
+\keyword{validation}
 

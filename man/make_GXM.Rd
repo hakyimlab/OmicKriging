@@ -1,0 +1,27 @@
+\name{make_GXM}
+\alias{make_GXM}
+\title{Compute gene expression correlation matrix.}
+\usage{
+  make_GXM(expFile = NULL, gxmFilePrefix = NULL,
+    idfile = NULL)
+}
+\arguments{
+  \item{expFile}{Path to gene expression file.}
+
+  \item{gxmFilePrefix}{File path prefixes for outputting
+  GCTA style binary correlation matrices.}
+
+  \item{idfile}{Path to file containing family IDs and
+  sample IDs with header FID and IID.}
+}
+\value{
+  Returns a correlation matrix of (N-samples x N-samples),
+  with rownames and colnames as sample IDs.
+}
+\description{
+  This function computes a gene expression correlation
+  matrix given a file of transcript expression levels for
+  each sample in the study. It returns a correlation matrix
+  with rownames and colnames as sample IDs.
+}
+
