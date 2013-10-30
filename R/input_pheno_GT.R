@@ -6,9 +6,7 @@
 #' used in downstream analyses such as: computing the genetic related matrix
 #' (\code{\link{make_grm}}) and computing principal components (\code{\link{make_PCs}})
 #'
-#' @param bedFile File path to PLINK .bed file.
-#' @param bimFile File path to PLINK .bim file.
-#' @param famFile File path to PLINK .fam file.
+#' @param bFile File path to PLINK .bed .bim .fam files.
 #' @param gdsFile File path to store GDS for other analyses.
 #'
 #' @return None. The GDS file is stored on disk.
@@ -21,9 +19,13 @@
 #' @references library(gdsfmt), library(SNPRelate)
 #'
 #' @export
-load_gene_data <- function(bedFile, bimFile, famFile, gdsFile) {
+convert_genotype_data <- function(bFile, gdsFile) {
   require(gdsfmt)
   require(SNPRelate)
+  '%&%' <- function(a, b) paste(a, b, sep="")
+  bedFile <- bFile %&% '.bed'
+  bimFile <- bFile %&% '.bim'
+  famFile <- bFile %&% '.fam'
   snpgdsBED2GDS(bedFile, famFile, bimFile, gdsFile)
 }
 
