@@ -15,7 +15,8 @@
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
 #'   Each entry in the matrix is of type 'double'.
 #'
-#' @include R/grm_io.R
+#' @include R/grm_IO.R
+#' @include R/rcpp_CORMAT.R
 #'
 #' @import gdsfmt
 #' @import SNPRelate

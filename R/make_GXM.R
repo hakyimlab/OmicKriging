@@ -12,7 +12,8 @@
 #' @return Returns a correlation matrix of (N-samples x N-samples), with
 #'   rownames and colnames as sample IDs.
 #'
-#' @include R/grm_io.R
+#' @include R/grm_IO.R
+#' @include R/rcpp_CORMAT.R
 #'
 #' @export
 make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
