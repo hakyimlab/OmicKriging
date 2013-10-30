@@ -4,9 +4,10 @@
 #' transcript expression levels for each sample in the study. It returns a
 #' correlation matrix with rownames and colnames as sample IDs.
 #'
-#' @param genefile Path to gene expression file.
-#' @param outFilePrefix File path prefixes for outputting GCTA style binary
+#' @param expFile Path to gene expression file.
+#' @param gxmFilePrefix File path prefixes for outputting GCTA style binary
 #'   correlation matrices.
+#' @param idfile Path to file containing family IDs and sample IDs with header FID and IID. 
 #'
 #' @return Returns a correlation matrix of (N-samples x N-samples), with
 #'   rownames and colnames as sample IDs.
