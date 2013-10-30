@@ -33,12 +33,6 @@
   divided out to unit variance) prior to calculating the
   correlation matrix.
 }
-\examples{
-grm <- make_grm(bedFile = "data/T1DCC.subset.bed",
-         bimFile = "data/T1DCC.subset.bim",
-         famFile = "data/T1DCC.subset.fam",
-         gdsFile = "~/tmp/T1DCC.subset.gds")
-}
 \keyword{GRM}
 \keyword{input,}
 

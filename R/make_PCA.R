@@ -20,7 +20,6 @@
 #' 
 #' @export
 make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
-  requrire(SNPRelate)
 
   gds <- openfn.gds(gdsFile)
   pca <- snpgdsPCA(gds, num.thread = n.core)
@@ -72,7 +71,6 @@ make_PCs_svd <- function(X, n.top = 2) {
 #' @import irlba
 #' @export
 make_PCs_irlba <- function(X, n.top = 2) {
-  require(irlba)
   
   res <- irlba(X, nu = n.top)
   rownames(res$u) <- rownames(X)

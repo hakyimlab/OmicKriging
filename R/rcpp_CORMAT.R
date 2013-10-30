@@ -10,10 +10,6 @@
 #'
 #' @keywords c++, performance, correlation matrix
 rcppcormat <- function(snpmat){
-    ## require
-    require(Rcpp)
-    require(RcppEigen)
-    require(inline)
     ## rcpp
     crossprodCpp <- '
     using Eigen::Map;

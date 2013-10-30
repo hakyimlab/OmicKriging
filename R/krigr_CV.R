@@ -36,7 +36,6 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
   ## TODO:: handling internal package references
   source('R/omic_KRIGR.R')
   ## dependencies
-  require(doMC)
   ## functions
   '%&%' <- function(a, b) paste(a, b, sep="")
 
@@ -121,7 +120,6 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
   ## summary
   if(length(unique(res$Ytest)) == 2) {
     auc <- function(predtype, phenotype){
-      require(ROCR)
       pred <- prediction(predtype, phenotype)
       perf <- performance(pred, "auc")
       aucval <- perf@y.values

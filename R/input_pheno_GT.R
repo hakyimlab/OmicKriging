@@ -20,8 +20,6 @@
 #'
 #' @export
 convert_genotype_data <- function(bFile, gdsFile) {
-  require(gdsfmt)
-  require(SNPRelate)
   '%&%' <- function(a, b) paste(a, b, sep="")
   bedFile <- bFile %&% '.bed'
   bimFile <- bFile %&% '.bim'

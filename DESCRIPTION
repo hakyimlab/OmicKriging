@@ -18,7 +18,15 @@ Description: This package provides functions to generate a correlation matrix
     variables X, it uses known correlation between X and Y to predict Y.
 License: GPL (>=3)
 Depends:
-    R(>= 2.15.1)
+    R(>= 2.15.1),
+    ROCR,
+    SNPRelate,
+    doMC,
+    gdsfmt,
+    irlba,
+    Rcpp,
+    RcppEigen,
+    inline
 Collate:
     'grm_IO.R'
     'input_pheno_GT.R'

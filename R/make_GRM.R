@@ -22,15 +22,8 @@
 #' @import SNPRelate
 #'
 #' @keywords input, GRM
-#' @examples
-#' grm <- make_grm(bedFile = "data/T1DCC.subset.bed",
-#'          bimFile = "data/T1DCC.subset.bim",
-#'          famFile = "data/T1DCC.subset.fam",
-#'          gdsFile = "~/tmp/T1DCC.subset.gds")
 #' @export
 make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampleList = NULL) {
-  require(gdsfmt)
-  require(SNPRelate)
   source('R/grm_IO.R')
   source('R/rcpp_CORMAT.R')
 
