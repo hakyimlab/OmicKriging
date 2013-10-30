@@ -15,7 +15,6 @@
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
 #'   Each entry in the matrix is of type 'double'.
 #'
-#' @include R/rcppcormat.r
 #' @include R/grm_io.R
 #'
 #' @import gdsfmt
@@ -28,25 +27,25 @@
 #'          famFile = "data/T1DCC.subset.fam",
 #'          gdsFile = "~/tmp/T1DCC.subset.gds")
 #' @export
-make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampleList = NULL) {
+make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampleList = NULL) {
   require(gdsfmt)
   require(SNPRelate)
-  source('R/rcppcormat.r')
-  source('R/grm_io.R')
+  source('R/grm_IO.R')
+  source('R/rcpp_CORMAT.R')
 
   genofile <- openfn.gds(gdsFile)
   ## pull an integer dosage matrix from the GDS. Rows are samples, columns are SNPs, and missing values are int 3.
   X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
   ## set missing values (int 3) to properly missing
   X[X == 3] <- NA
-  ## z-normalize matrix (sweep out column means, and divide out column standard deviations)
+  ## z-normalize matrix (sweep out column means, and divide out column matrices)
   X <- scale(X, center = TRUE, scale = TRUE)
   ## set missing values to new column mean, i.e. 0.0
-  X[X == NA] <- 0.0
-  grm <- rcppcormat(t(Xbar))
+  X[is.na(X)] <- 0.0
+  grm <- rcppcormat(t(X))
   
   ## pull sample IDs unless a sample list is specified
-  if(is.null(sampleList)) {
+  if(!is.null(sampleList)) {
     sample.ids <- sampleList
   } else {
     sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
@@ -57,11 +56,9 @@ make_grm <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
   rownames(grm) <- sample.ids
 
   ## write out the GRM if a file is specified
-  if( !is.null(grmFilePrefix) ) {
+  if(!is.null(grmFilePrefix)) {
     writeGRMBin(X = grm, prefix = grmFilePrefix)
   }
 
   return(grm)
 }
-
-
