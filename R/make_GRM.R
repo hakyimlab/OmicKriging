@@ -2,7 +2,7 @@
 #'
 #' This is a convenience function which produces a centered genetic correlation
 #' matrix from SNPs loaded into a Genomic Data Structure (GDS) file. The resulting matrix can be used 
-#' with the \code{\link{okriging}} function. The GRM can be saved to disk as a
+#' with the okriging function. The GRM can be saved to disk as a
 #' R object for fast loading downstream. The genotype  matrix is z-score normalized (i.e.
 #' column means are centered and column variance is divided out to unit variance)
 #' prior to calculating the correlation matrix.
@@ -51,7 +51,7 @@ make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
 
   ## write out the GRM if a file is specified
   if(!is.null(grmFilePrefix)) {
-    writeGRMBin(X = grm, prefix = grmFilePrefix)
+    write_GRMBin(X = grm, prefix = grmFilePrefix)
   }
 
   return(grm)

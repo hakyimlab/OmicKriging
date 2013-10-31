@@ -24,9 +24,6 @@
   convenience wrapper for functions from the SNPRelate
   package.
 }
-\references{
-  library(SNPRelate)
-}
 \keyword{GRM}
 \keyword{PCA,}
 \keyword{covariate,}

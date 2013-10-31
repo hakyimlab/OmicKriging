@@ -7,7 +7,7 @@
 #' package to distribute computation over multiple cores. If the phenotype is 
 #' case/control, a ROCR AUC and GLM analysis is run and the results printed to screen.
 #'
-#' @param corlist A list of correlation matrices used in Kriging. rownames and colnames
+#' @param cor.list A list of correlation matrices used in Kriging. rownames and colnames
 #'   of cor should be IID list and include idtest and idtrain.
 #' @param h2.vec has weights for each RM relatednes matrix
 #' @param pheno.df A data frame with rownames set as sample IDs and a column containing phenotype data.
@@ -22,6 +22,7 @@
 #'    If a numeric value is supplied, that number of cores is registered. If the
 #'    value "all" is supplied, all available cores are used. 
 #' @param verbose Report rounds on cross validation on standard out. 
+#' @param ... Optional and unnamed arguments.
 #'
 #' @return  A dataframe with three columns: sample ID, observed phenotype Ytest, and predicted phenotype Ypred
 #'

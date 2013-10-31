@@ -45,7 +45,7 @@ make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
 
   ## write to disk
   if(!is.null(gxmFilePrefix)) {
-    writeGRMBin(X = cormat, prefix = gxmFilePrefix, n.snps = length(genemat[1,])) 
+    write_GRMBin(X = cormat, prefix = gxmFilePrefix, n.snps = length(genemat[1,])) 
   }
   return(cormat)
 }

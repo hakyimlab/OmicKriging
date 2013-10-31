@@ -4,7 +4,7 @@
 #' a Genomic Data Structure (GDS) stored on disk. This is a wrapper function
 #' aroud utilities provided by the gdsfmt and SNPRelate packages. The GDS is
 #' used in downstream analyses such as: computing the genetic related matrix
-#' (\code{\link{make_grm}}) and computing principal components (\code{\link{make_PCs}})
+#' (make_GRM) and computing principal components (make_PCA).
 #'
 #' @param bFile File path to PLINK .bed .bim .fam files.
 #' @param gdsFile File path to store GDS for other analyses.

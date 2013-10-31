@@ -26,12 +26,12 @@
   This is a convenience function which produces a centered
   genetic correlation matrix from SNPs loaded into a
   Genomic Data Structure (GDS) file. The resulting matrix
-  can be used with the \code{\link{okriging}} function. The
-  GRM can be saved to disk as a R object for fast loading
-  downstream. The genotype matrix is z-score normalized
-  (i.e. column means are centered and column variance is
-  divided out to unit variance) prior to calculating the
-  correlation matrix.
+  can be used with the okriging function. The GRM can be
+  saved to disk as a R object for fast loading downstream.
+  The genotype matrix is z-score normalized (i.e. column
+  means are centered and column variance is divided out to
+  unit variance) prior to calculating the correlation
+  matrix.
 }
 \keyword{GRM}
 \keyword{input,}

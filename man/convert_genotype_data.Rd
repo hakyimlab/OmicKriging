@@ -19,8 +19,8 @@
   disk. This is a wrapper function aroud utilities provided
   by the gdsfmt and SNPRelate packages. The GDS is used in
   downstream analyses such as: computing the genetic
-  related matrix (\code{\link{make_grm}}) and computing
-  principal components (\code{\link{make_PCs}})
+  related matrix (make_GRM) and computing principal
+  components (make_PCA).
 }
 \references{
   library(gdsfmt), library(SNPRelate)

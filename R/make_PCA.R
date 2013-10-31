@@ -16,8 +16,6 @@
 #'
 #' @import SNPRelate
 #'
-#' @references library(SNPRelate)
-#' 
 #' @export
 make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
 

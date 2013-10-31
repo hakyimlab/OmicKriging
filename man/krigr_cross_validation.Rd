@@ -7,7 +7,7 @@
     verbose = FALSE, ...)
 }
 \arguments{
-  \item{corlist}{A list of correlation matrices used in
+  \item{cor.list}{A list of correlation matrices used in
   Kriging. rownames and colnames of cor should be IID list
   and include idtest and idtrain.}
 
@@ -37,6 +37,8 @@
 
   \item{verbose}{Report rounds on cross validation on
   standard out.}
+
+  \item{...}{Optional and unnamed arguments.}
 }
 \value{
   A dataframe with three columns: sample ID, observed

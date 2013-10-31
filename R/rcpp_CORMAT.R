@@ -8,6 +8,8 @@
 #'
 #' @return A correlation matrix.
 #'
+#' @import Rcpp
+#'
 #' @keywords c++, performance, correlation matrix
 rcppcormat <- function(snpmat){
     ## rcpp
