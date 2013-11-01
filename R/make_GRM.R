@@ -36,6 +36,9 @@ make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
   X <- scale(X, center = TRUE, scale = TRUE)
   ## set missing values to new column mean, i.e. 0.0
   X[is.na(X)] <- 0.0
+  
+  gc()
+  
   grm <- rcppcormat(t(X))
   
   ## pull sample IDs unless a sample list is specified
