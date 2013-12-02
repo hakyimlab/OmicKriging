@@ -6,9 +6,10 @@
 #'
 #' @param snpmat A centered SNP matrix containing fields of type 'double'.
 #'
-#' @return A correlation matrix.
+#' @return An n x n correlation matrix.
 #'
 #' @import Rcpp
+#' @import inline
 #'
 #' @keywords c++, performance, correlation matrix
 rcppcormat <- function(snpmat){
@@ -44,7 +45,6 @@ rcppcormat <- function(snpmat){
     return wrap(AtA);
     '
   
-    cxxfunction <- function(){} ## added function to namespace so that R CMD Check catches it
     ## compile the cross product function
     cpcpp <- cxxfunction(signature(AA="matrix"), crossprodCpp,
     plugin="RcppEigen", verbose=FALSE)
