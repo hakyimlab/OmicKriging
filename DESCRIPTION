@@ -19,9 +19,10 @@ Description: This package provides functions to generate a correlation matrix
 License: GPL (>=3)
 Depends:
     R(>= 2.15.1),
+    doMC
+Imports:
     ROCR,
     SNPRelate,
-    doMC,
     gdsfmt,
     irlba,
     Rcpp,
