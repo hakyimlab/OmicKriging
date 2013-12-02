@@ -19,19 +19,15 @@ Description: This package provides functions to generate a correlation matrix
 License: GPL (>=3)
 Depends:
     R(>= 2.15.1),
+    SNPRelate,
     doMC
 Imports:
     ROCR,
-    SNPRelate,
+    inline,
     gdsfmt,
     irlba,
-    Rcpp,
+    Rcpp
 Collate:
-    'grm_IO.R'
     'input_pheno_GT.R'
     'omic_KRIGR.R'
-    'krigr_CV.R'
-    'rcpp_CORMAT.R'
-    'make_GRM.R'
-    'make_GXM.R'
-    'make_PCA.R'
+    'correlation_matrices.R'
