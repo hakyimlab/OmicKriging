@@ -43,7 +43,8 @@ rcppcormat <- function(snpmat){
 
     return wrap(AtA);
     '
-
+  
+    cxxfunction <- function(){} ## added function to namespace so that R CMD Check catches it
     ## compile the cross product function
     cpcpp <- cxxfunction(signature(AA="matrix"), crossprodCpp,
     plugin="RcppEigen", verbose=FALSE)

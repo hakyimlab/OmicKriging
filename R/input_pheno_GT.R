@@ -24,7 +24,7 @@ convert_genotype_data <- function(bFile, gdsFile) {
   bedFile <- bFile %&% '.bed'
   bimFile <- bFile %&% '.bim'
   famFile <- bFile %&% '.fam'
-  snpgdsBED2GDS(bedFile, famFile, bimFile, gdsFile)
+  snpgdsBED2GDS(bed.fn=bedFile, fam.fn=famFile, bim.fn=bimFile, out.gdsfn=gdsFile)
 }
 
 #' Loads sample phenotype and covariate data into data frame.

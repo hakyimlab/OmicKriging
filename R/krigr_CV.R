@@ -92,6 +92,7 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
   
   ## running kriging routine on each core for each testing group
   n.par <- unique(rand.groups)
+  i <- 0 ## added i to the functions namespace so that R CMD Check catches it
   time <- system.time(
     res <- foreach(i = 1:length(n.par), .combine = rbind) %dopar% {
       if (verbose) cat(n.par[i], "\n")
