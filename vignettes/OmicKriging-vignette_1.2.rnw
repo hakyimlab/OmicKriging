@@ -1,0 +1,152 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+\documentclass[a4paper]{article}
+
+\title{Application Tutorial: OmicKriging}
+\author{Keston Aquino-Michaels, Heather E. Wheeler, Vassily V. Trubetskoy and Hae Kyung Im}
+
+
+\usepackage{a4wide}
+\usepackage{hyperref}
+\usepackage{Sweave}
+
+\SweaveOpts{engine=R}
+%\VignetteIndexEntry{Using OmicKriging} \\
+%\VignetteDepends{MCMCpack} \\
+%\VignetteKeywords{MCMClogit,logit,MCMCpack} \\
+%\VignettePackage{MCMCpack} \\
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+Method citation: Wheeler HE, et al. (2013) Poly-Omic Prediction of Complex Traits: OmicKriging. arXiv:1303.1788 \url{http://arxiv.org/abs/1303.1788}
+\begin{center}
+\line(1,0){250}
+\end{center}
+To install from CRAN:
+\begin{Schunk}
+\begin{Sinput}
+> install.packages("OmicKriging")
+\end{Sinput}
+\end{Schunk}
+\begin{center}
+\line(1,0){250}
+\end{center}
+Start by loading OmicKriging functions into R:
+\begin{Schunk}
+\begin{Sinput}
+> library(OmicKriging)
+\end{Sinput}
+\end{Schunk}
+Define paths to the genotype (plink binary pedigree format), gene expression, and phenotype data files (paths may differ based on where the files are located). These files will later be passed to upcoming functions:
+\begin{Schunk}
+
+<<>>=
+library(OmicKriging)
+
+## decompress vingnette data
+untar("vignettes/data.tar.gz", exdir="vignettes/")
+
+"%&%" <- function(a, b) paste(a, b, sep="")
+gdsFile <- "gdsTemp.gds"
+ok.dir <- "vignettes/data/"
+bFile <- ok.dir %&% "ig_genotypes"
+expFile <- ok.dir %&% "ig_gene_exon.txt"
+phenoFile <- ok.dir %&% "ig_pheno.txt"
+@
+
+\end{Schunk}
+Load the phenotype data into R:
+\begin{Schunk}
+
+<<>>=
+pheno <- read.table(phenoFile, header = T)
+@
+
+\end{Schunk}
+Load a pre-computed GCTA GRM into R (recommended):
+\begin{Schunk}
+
+<<>>=
+grmMat <- read_GRMBin(bFile)
+@
+
+\end{Schunk}
+Alternatively, to compute the GRM in R start by converting the genotype data from plink binary format into GDS format:
+\begin{Schunk}
+
+<<>>=
+library(SNPRelate) ## this should be removed
+convert_genotype_data(bFile = bFile, gdsFile = gdsFile)
+@
+
+\end{Schunk}
+Subsequently, compute a genetic relatedness matrix (GRM) from the GDS file: 
+\begin{Schunk}
+
+<<>>=
+grmMat <- make_GRM(gdsFile = gdsFile)
+@
+
+\end{Schunk}
+By default, grmFilePrefix = NULL, however if specified, this function will save the computed GRM to disk in GCTA binary format. Additionally by default snpList = NULL and sampleList = NULL, however if specified, a list of individuals or snps will be retained in GRM calculation.
+\\
+\\
+Load and calculate a gene expression relatedness matrix (GXM) with the following function:
+\begin{Schunk}
+
+<<>>=
+gxmMat <- make_GXM(expFile = expFile)
+@
+
+\end{Schunk}
+By default, gxmFilePrefix = NULL, however if specified, this function will save the computed GXM to disk in GCTA binary format.
+\begin{center}
+\line(1,0){250}
+\end{center}
+Additional convenience functions are included to perform principal components analysis (PCA):
+\begin{Schunk}
+
+<<>>=
+pcMatXM <- make_PCs_irlba(gxmMat, n.top = 10)
+
+pcMatGM <- make_PCs_irlba(grmMat, n.top = 10)
+
+pcMat <- cbind(pcMatGM, pcMatXM[match(rownames(pcMatGM), rownames(pcMatXM)),])
+@
+
+\end{Schunk}
+\begin{center}
+\line(1,0){250}
+\end{center}
+The following convenience function allows the user to perform n-fold cross-validation. Specify the number of cores you wish to use (default = "all"), the number of cross-validation folds desired (default = 10), covariates (by default covar.mat = NULL), the phenotype object, pheno.id (by default = 1 (the first phenotype in the file)), the h2 vector and a list of the correlation matrices to be included.
+ \\
+\\
+Note: The sum of the h2 vector must be between 0 and 1. In this example, we will give each matrix equal weight.
+
+\begin{Schunk}
+
+<<>>=
+result <- krigr_cross_validation(pheno.df = pheno,
+	cor.list = list(grmMat, gxmMat),
+	h2.vec = c(0.5, 0.5),
+	covar.mat = pcMat,
+	ncore = 2,
+	nfold = "LOOCV")
+@
+
+\end{Schunk}
+This function will return a data.frame with column Ypred corresponding to the predicted values and column Ytest corresponding to the measured phenotypes.
+\begin{center}
+\line(1,0){250}
+\end{center}
+\begin{center}
+Congratulations! 
+\\
+You have just completed the OmicKriging tutorial!
+\end{center}
+\begin{center}
+\line(1,0){250}
+\end{center}
+
+\end{document}
+
