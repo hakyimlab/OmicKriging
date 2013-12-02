@@ -7,13 +7,11 @@
 
 \usepackage{a4wide}
 \usepackage{hyperref}
-\usepackage{Sweave}
+\usepackage{Sweave} 
 
-\SweaveOpts{engine=R}
-%\VignetteIndexEntry{Using OmicKriging} \\
-%\VignetteDepends{MCMCpack} \\
-%\VignetteKeywords{MCMClogit,logit,MCMCpack} \\
-%\VignettePackage{MCMCpack} \\
+\SweaveOpts{engine=R} 
+%\VignetteIndexEntry{Using the OmicKriging Package} 
+
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -44,11 +42,11 @@ Define paths to the genotype (plink binary pedigree format), gene expression, an
 library(OmicKriging)
 
 ## decompress vingnette data
-untar("vignettes/data.tar.gz", exdir="vignettes/")
+untar("data.tar.gz", exdir="vignettes/")
 
 "%&%" <- function(a, b) paste(a, b, sep="")
 gdsFile <- "gdsTemp.gds"
-ok.dir <- "vignettes/data/"
+ok.dir <- "data/"
 bFile <- ok.dir %&% "ig_genotypes"
 expFile <- ok.dir %&% "ig_gene_exon.txt"
 phenoFile <- ok.dir %&% "ig_pheno.txt"

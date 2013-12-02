@@ -15,9 +15,6 @@
 #' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
 #'   Each entry in the matrix is of type 'double'.
 #'
-#' @include R/grm_IO.R
-#' @include R/rcpp_CORMAT.R
-#'
 #' @import gdsfmt
 #' @import SNPRelate
 #'
@@ -68,9 +65,6 @@ make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampl
 #'
 #' @return Returns a correlation matrix of (N-samples x N-samples), with
 #'   rownames and colnames as sample IDs.
-#'
-#' @include R/grm_IO.R
-#' @include R/rcpp_CORMAT.R
 #'
 #' @export
 make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
