@@ -41,14 +41,11 @@ Define paths to the genotype (plink binary pedigree format), gene expression, an
 <<>>=
 library(OmicKriging)
 
-## decompress vingnette data
-untar("data.tar.gz", exdir="vignettes/")
-
 "%&%" <- function(a, b) paste(a, b, sep="")
 gdsFile <- "gdsTemp.gds"
-ok.dir <- "data/"
+ok.dir <- "vignette_data/"
 bFile <- ok.dir %&% "ig_genotypes"
-expFile <- ok.dir %&% "ig_gene_exon.txt"
+expFile <- ok.dir %&% "ig_gene_exon.txt.gz"
 phenoFile <- ok.dir %&% "ig_pheno.txt"
 @
 

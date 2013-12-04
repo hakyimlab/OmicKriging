@@ -17,6 +17,7 @@
 #'
 #' @import gdsfmt
 #' @import SNPRelate
+#' @import RcppEigen
 #'
 #' @keywords input, GRM
 #' @export
@@ -185,8 +186,8 @@ make_PCs_irlba <- function(X, n.top = 2) {
 #'
 #' @return An n x n correlation matrix.
 #'
+#' @importFrom inline cxxfunction
 #' @import Rcpp
-#' @import inline
 #'
 #' @keywords c++, performance, correlation matrix
 rcppcormat <- function(snpmat){
