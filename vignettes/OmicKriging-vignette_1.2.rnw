@@ -1,4 +1,4 @@
-% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{OmicKriging} 
 \documentclass[a4paper]{article}
 
 \title{Application Tutorial: OmicKriging}
@@ -10,7 +10,6 @@
 \usepackage{Sweave} 
 
 \SweaveOpts{engine=R} 
-%\VignetteIndexEntry{Using the OmicKriging Package} 
 
 
 \begin{document}
