@@ -231,8 +231,7 @@ rcppcormat <- function(snpmat){
 
     ## post work
     cormatdiag <- diag(cormat)
-    cormat <- sweep(cormat, 1, cormatdiag, "/")
-    cormat <- sweep(cormat, 2, cormatdiag, "/")
+    cormat <- sweep(cormat, 1:2, cormatdiag, "/")
     return(cormat)
 
 }
