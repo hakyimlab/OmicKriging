@@ -68,7 +68,6 @@ Alternatively, to compute the GRM in R start by converting the genotype data fro
 \begin{Schunk}
 
 <<>>=
-library(SNPRelate) ## this should be removed
 convert_genotype_data(bFile = bFile, gdsFile = gdsFile)
 @
 
@@ -81,7 +80,7 @@ grmMat <- make_GRM(gdsFile = gdsFile)
 @
 
 \end{Schunk}
-By default, grmFilePrefix = NULL, however if specified, this function will save the computed GRM to disk in GCTA binary format. Additionally by default snpList = NULL and sampleList = NULL, however if specified, a list of individuals or snps will be retained in GRM calculation.
+By default, grmFilePrefix is set to NULL, however if specified, this function will save the computed GRM to disk in GCTA binary format. Additionally by default both snpList and sampleList are set to NULL. However you may restrict the GRM calculation by specifying a vector of sample IDs or a vector of SNP IDs here.
 \\
 \\
 Load and calculate a gene expression relatedness matrix (GXM) with the following function:
@@ -92,7 +91,7 @@ gxmMat <- make_GXM(expFile = expFile)
 @
 
 \end{Schunk}
-By default, gxmFilePrefix = NULL, however if specified, this function will save the computed GXM to disk in GCTA binary format.
+Similarly, by default, gxmFilePrefix is set to NULL, however if specified, this function will save the computed GXM to disk in GCTA binary format.
 \begin{center}
 \line(1,0){250}
 \end{center}
