@@ -33,7 +33,7 @@ Start by loading OmicKriging functions into R:
 > library(OmicKriging)
 \end{Sinput}
 \end{Schunk}
-Define paths to the genotype (plink binary pedigree format), gene expression, and phenotype data files (paths may differ based on where the files are located). These files will later be passed to upcoming functions:
+Define paths to the genotype (plink binary pedigree format), gene expression, and phenotype data files (paths may differ based on where the files are located). The path.package() function returns the package installation directory. These files will later be passed to upcoming functions:
 \begin{Schunk}
 
 <<>>=
@@ -41,7 +41,7 @@ library(OmicKriging)
 
 "%&%" <- function(a, b) paste(a, b, sep="")
 gdsFile <- "gdsTemp.gds"
-ok.dir <- "vignette_data/"
+ok.dir <- path.package("OmicKriging") %&% "/doc/vignette_data/"
 bFile <- ok.dir %&% "ig_genotypes"
 expFile <- ok.dir %&% "ig_gene_exon.txt.gz"
 phenoFile <- ok.dir %&% "ig_pheno.txt"
