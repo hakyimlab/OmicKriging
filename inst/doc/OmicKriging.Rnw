@@ -40,8 +40,8 @@ Define paths to the genotype (plink binary pedigree format), gene expression, an
 library(OmicKriging)
 
 "%&%" <- function(a, b) paste(a, b, sep="")
-gdsFile <- "gdsTemp.gds"
 ok.dir <- path.package("OmicKriging") %&% "/doc/vignette_data/"
+gdsFile <- ok.dir %&% "gdsTemp.gds"
 bFile <- ok.dir %&% "ig_genotypes"
 expFile <- ok.dir %&% "ig_gene_exon.txt.gz"
 phenoFile <- ok.dir %&% "ig_pheno.txt"
