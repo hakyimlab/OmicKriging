@@ -16,8 +16,15 @@
 \maketitle
 Method citation: Wheeler HE, et al. (2013) Poly-Omic Prediction of Complex Traits: OmicKriging. arXiv:1303.1788 \url{http://arxiv.org/abs/1303.1788}
 \begin{center}
-\line(1,0){250}
+  \line(1,0){250}
 \end{center}
+\textbf{NOTE: Currently, OmicKriging is not built for Windows due to dependency on the doMC library.}
+\begin{center}
+  \line(1,0){250}
+\end{center}
+
+\begin{section}{Running OmicKriging with Example Data}
+
 To install from CRAN:
 \begin{Schunk}
 \begin{Sinput}
@@ -139,6 +146,8 @@ You have just completed the OmicKriging tutorial!
 \begin{center}
 \line(1,0){250}
 \end{center}
+
+\end{section}
 
 \end{document}
 
