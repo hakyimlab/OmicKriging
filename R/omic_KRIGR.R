@@ -77,7 +77,7 @@ okriging <- function(idtest,idtrain=NULL,corlist,H2vec,pheno,phenoname,Xcova=NUL
 #' This is a flexible cross validation routine which wraps the Omic Kriging
 #' calculation. The user can specify the size of the test set, all the way to
 #' "Leave One Out" cross validation. Additionally, all relevant  parameters in the
-#' \code{\link{okriging}} function are exposed. This function uses the doMC
+#' \code{\link{okriging}} function are exposed. This function uses the doParallel
 #' package to distribute computation over multiple cores. If the phenotype is 
 #' case/control, a ROCR AUC and GLM analysis is run and the results printed to screen.
 #'
@@ -102,9 +102,9 @@ okriging <- function(idtest,idtrain=NULL,corlist,H2vec,pheno,phenoname,Xcova=NUL
 #'
 #' @keywords prediction, cross validation
 #'
-#' @include R/omic_KRIGR.R
+#' @include omic_KRIGR.R
 #'
-#' @import doMC
+#' @import doParallel
 #' @import ROCR
 #' @export
 krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, covar.mat = NULL, nfold = 10, ncore = "all", verbose = FALSE, ...) {
@@ -122,11 +122,14 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
   ## detect cores  
   if(ncore == "all") {
     ncore <- detectCores()
-    registerDoMC(cores = ncore)
-    } else {
-    registerDoMC(cores = ncore)
-    }
+  } else if (!is.numeric(ncore)) {
+    stop("ncore supplied must either be numeric or the string \"all\".")
+  }
   
+  ## register cluster
+  clust <- makeCluster(ncore)
+  registerDoParallel(clust)
+
   ## set n-fold  
   if(nfold == "LOOCV") {
     nfold <- n.samples
@@ -166,7 +169,7 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
   n.par <- unique(rand.groups)
   i <- 0 ## added i to the functions namespace so that R CMD Check catches it
   time <- system.time(
-    res <- foreach(i = 1:length(n.par), .combine = rbind) %dopar% {
+    res <- foreach(i = 1:length(n.par), .combine = rbind, .export = ls(envir=globalenv())) %dopar% {
       if (verbose) cat(n.par[i], "\n")
       flush.console()
     

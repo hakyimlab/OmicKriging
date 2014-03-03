@@ -1,7 +1,7 @@
 Package: OmicKriging
 Type: Package
 Title: OmicKriging for Phenotypic Prediction
-Version: 1.1
+Version: 1.2
 Date: 2013-09-26
 Author: Hae Kyung Im, Heather E. Wheeler, Keston Aquino Michaels, Vassily
     Trubetskoy
@@ -20,7 +20,7 @@ License: GPL (>=3)
 Depends:
     R(>= 2.15.1),
     SNPRelate,
-    doMC
+    doParallel
 Imports:
     ROCR,
     inline,
@@ -29,6 +29,6 @@ Imports:
     Rcpp,
     RcppEigen
 Collate:
+    'correlation_matrices.R'
     'input_pheno_GT.R'
     'omic_KRIGR.R'
-    'correlation_matrices.R'
