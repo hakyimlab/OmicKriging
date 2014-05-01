@@ -149,7 +149,7 @@ You have just completed the OmicKriging tutorial!
 
 \end{section}
 
-\section*{Cleanup}
+\begin{section}{Cleanup}
 
 This is a cleanup step for the vignette on Windows; typically not
 needed for users.
