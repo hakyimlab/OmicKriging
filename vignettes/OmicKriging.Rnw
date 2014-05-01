@@ -5,7 +5,6 @@
 \author{Keston Aquino-Michaels, Heather E. Wheeler, Vassily V. Trubetskoy and Hae Kyung Im}
 
 
-\usepackage{a4wide}
 \usepackage{hyperref}
 \usepackage{Sweave} 
 
