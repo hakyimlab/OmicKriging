@@ -154,12 +154,13 @@ You have just completed the OmicKriging tutorial!
 This is a cleanup step for the vignette on Windows; typically not
 needed for users.
 
+\begin{Schunk}
 <<closeConnetions,results=hide>>=
 allCon <- showConnections()
 socketCon <- as.integer(rownames(allCon)[allCon[, "class"] == "sockconn"])
 sapply(socketCon, function(ii) close.connection(getConnection(ii)) )
 @
-
+\end{Schunk}
 \end{section}
 
 \end{document}
