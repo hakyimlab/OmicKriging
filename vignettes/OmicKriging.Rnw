@@ -17,7 +17,6 @@ Method citation: Wheeler HE, et al. (2013) Poly-Omic Prediction of Complex Trait
 \begin{center}
   \line(1,0){250}
 \end{center}
-\textbf{NOTE: Currently, OmicKriging is not built for Windows due to dependency on the doMC library.}
 \begin{center}
   \line(1,0){250}
 \end{center}
