@@ -5,7 +5,7 @@ Version: 1.2
 Date: 2013-09-26
 Author: Hae Kyung Im, Heather E. Wheeler, Keston Aquino Michaels, Vassily
     Trubetskoy
-Maintainer: Hae Kyung Im <haky@uchicago.edu>, Vassily Trubetskoy <trubetskoy@uchicago.edu>
+Maintainer: Hae Kyung Im <haky@uchicago.edu>
 Description: This package provides functions to generate a correlation matrix
     from a genetic dataset and to use this matrix to predict the phenotype of an
     individual by using the phenotypes of the remaining individuals through
@@ -20,15 +20,18 @@ License: GPL (>=3)
 Depends:
     R(>= 2.15.1),
     SNPRelate,
-    doParallel
+    doParallel,
+    Rcpp,
+    RcppEigen
+LinkingTo: Rcpp,
+    RcppEigen
 Imports:
     ROCR,
     inline,
     gdsfmt,
-    irlba,
-    Rcpp,
-    RcppEigen
+    irlba
 Collate:
     'correlation_matrices.R'
     'input_pheno_GT.R'
     'omic_KRIGR.R'
+    'RcppExports.R'
