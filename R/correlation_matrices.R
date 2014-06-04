@@ -1,57 +1,3 @@
-#' Compute genetic correlation matrix from PLINK binary files.
-#'
-#' This is a convenience function which produces a centered genetic correlation
-#' matrix from SNPs loaded into a Genomic Data Structure (GDS) file. The resulting matrix can be used 
-#' with the okriging function. The GRM can be saved to disk as a
-#' R object for fast loading downstream. The genotype  matrix is z-score normalized (i.e.
-#' column means are centered and column variance is divided out to unit variance)
-#' prior to calculating the correlation matrix.
-#'
-#' @param gdsFile File holding the GDS from which to pull the raw genotype matrix.
-#' @param grmFilePrefix File to store the resulting GRM on disk as an R object.
-#' @param snpList A vector of SNP IDs to subset the GRM on.
-#' @param sampleList A vector of sample IDs to subset the GRM on.
-#'
-#' @return A genetic correlation matrix with colnames and rownames set to sample IDs.
-#'   Each entry in the matrix is of type 'double'.
-#'
-#' @import gdsfmt
-#' @import SNPRelate
-#'
-#' @keywords input, GRM
-#' @export
-make_GRM <- function(gdsFile = NULL, grmFilePrefix = NULL, snpList = NULL, sampleList = NULL) {
-
-  genofile <- openfn.gds(gdsFile)
-  ## pull an integer dosage matrix from the GDS. Rows are samples, columns are SNPs, and missing values are int 3.
-  X <- snpgdsGetGeno(gdsobj = genofile, sample.id = sampleList, snp.id = snpList, verbose = FALSE)
-  ## set missing values (int 3) to properly missing
-  X[X == 3] <- NA
-  ## z-normalize matrix (sweep out column means, and divide out column matrices)
-  X <- scale(X, center = TRUE, scale = TRUE)
-  ## set missing values to new column mean, i.e. 0.0
-  X[is.na(X)] <- 0.0
-  grm <- rcppcormat(t(X))
-  
-  ## pull sample IDs unless a sample list is specified
-  if(!is.null(sampleList)) {
-    sample.ids <- sampleList
-  } else {
-    sample.ids <- read.gdsn(index.gdsn(genofile, "sample.id"))
-  }
-
-  ## annotate columns and rows with sample IDs
-  colnames(grm) <- sample.ids
-  rownames(grm) <- sample.ids
-
-  ## write out the GRM if a file is specified
-  if(!is.null(grmFilePrefix)) {
-    write_GRMBin(X = grm, prefix = grmFilePrefix)
-  }
-
-  return(grm)
-}
-
 #' Compute gene expression correlation matrix.
 #'
 #' This function computes a gene expression correlation matrix given a file of
@@ -85,7 +31,7 @@ make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
   genemat[is.na(genemat)] <- 0.0
    
   ## compute cor mat
-  cormat <- rcppcormat(t(genemat))
+  cormat <- cor(genemat)
   
   ## give it row names
   colnames(cormat) <- cordata.id[,2]
@@ -96,33 +42,6 @@ make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
     write_GRMBin(X = cormat, prefix = gxmFilePrefix, n.snps = length(genemat[1,])) 
   }
   return(cormat)
-}
-
-#' Run Principal Component Analysis (PCA) using the Genomic Data Structure (GDS).
-#'
-#' An efficient method for computing Principal Components using the Genomic Data
-#' Structure (GDS). This is a convenience wrapper for functions from the 
-#' SNPRelate package.
-#'
-#' @param gdsFile A Genomic Data Structure file describing your study.
-#' @param n.top Number of top principal components to return. Defaults to
-#'   returning all components (i.e. # of samples).
-#' @param n.core Distrubute computation across N cores.
-#'
-#' @return A matrix of Principal Components of dimension (# of samples) x
-#'   (n.top).
-#'
-#' @keywords covariate, PCA, GRM
-#'
-#' @import SNPRelate
-#'
-#' @export
-make_PCs_gds <- function(gdsFile, n.core, n.top = 0) {
-
-  gds <- openfn.gds(gdsFile)
-  pca <- snpgdsPCA(gds, num.thread = n.core)
-  rownames(pca$eigenvect) <- read.gdsn(index.gdsn(gds, "sample.id"))
-  return( pca$eigenvect )
 }
 
 #' Run Principal Component Analysis (PCA) using base R svd() function.
@@ -175,26 +94,6 @@ make_PCs_irlba <- function(X, n.top = 2) {
   return(res$u)
 }
 
-#' Compute a correlation matrix.
-#'
-#' This function computes a correlation matrix using a cross product. It is
-#' implemented in C++ for performance. This function is compiled and called
-#' from R using the Rcpp package.
-#'
-#' @param snpmat A centered SNP matrix containing fields of type 'double'.
-#'
-#' @return An n x n correlation matrix.
-#'
-#' @keywords c++, performance, correlation matrix
-rcppcormat <- function(snpmat){
-    cormat <- cpcpp(snpmat)
-
-    ## post work
-    cormatdiag <- diag(cormat)
-    cormat <- sweep(cormat, 1:2, cormatdiag, "/")
-    return(cormat)
-
-}
 
 #' Read the GRM binary file.
 #'
