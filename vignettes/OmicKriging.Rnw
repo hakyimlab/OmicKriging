@@ -38,61 +38,39 @@ Start by loading OmicKriging functions into R:
 > library(OmicKriging)
 \end{Sinput}
 \end{Schunk}
-Define paths to the genotype (plink binary pedigree format), gene expression, and phenotype data files (paths may differ based on where the files are located). The path.package() function returns the package installation directory. These files will later be passed to upcoming functions:
+Define paths to the genetic relatedness (GCTA binary format), gene expression, and phenotype data files (paths may differ based on where the files are located). The path.package() function returns the package installation directory. These files will later be passed to upcoming functions:
 \begin{Schunk}
-
 <<>>=
 library(OmicKriging)
 
-"%&%" <- function(a, b) paste(a, b, sep="")
-gdsFile <-"gdsTemp.gds"
-ok.dir <-  path.package('OmicKriging') %&% "/doc/vignette_data/"
-bFile <- ok.dir %&% "ig_genotypes"
-expFile <- ok.dir %&% "ig_gene_subset.txt.gz"
-phenoFile <- ok.dir %&% "ig_pheno.txt"
+binaryFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_genotypes.grm.bin")
+binaryFileBase <- substr(binaryFile,1, nchar(binaryFile) - 4)
+expressionFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_gene_subset.txt.gz") 
+phenotypeFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_pheno.txt") 
 @
 
 \end{Schunk}
 Load the phenotype data into R:
 \begin{Schunk}
-
 <<>>=
-pheno <- read.table(phenoFile, header = T)
+pheno <- read.table(phenotypeFile, header = T)
 @
 
 \end{Schunk}
-Load a pre-computed GCTA GRM into R (recommended):
+Load a pre-computed GCTA GRM into R:
 \begin{Schunk}
-
 <<>>=
-grmMat <- read_GRMBin(bFile)
+grmMat <- read_GRMBin(binaryFileBase)
 @
 
 \end{Schunk}
-Alternatively, to compute the GRM in R start by converting the genotype data from plink binary format into GDS format:
-\begin{Schunk}
-
-<<>>=
-convert_genotype_data(bFile = bFile, gdsFile = gdsFile)
-@
-
-\end{Schunk}
-Subsequently, compute a genetic relatedness matrix (GRM) from the GDS file: 
-\begin{Schunk}
-
-<<>>=
-grmMat <- make_GRM(gdsFile = gdsFile)
-@
-
-\end{Schunk}
-By default, grmFilePrefix is set to NULL, however if specified, this function will save the computed GRM to disk in GCTA binary format. Additionally by default both snpList and sampleList are set to NULL. However you may restrict the GRM calculation by specifying a vector of sample IDs or a vector of SNP IDs here.
+By default, grmFilePrefix is set to NULL. However, if specified, this function will save the computed GRM to disk in GCTA binary format. Additionally by default both snpList and sampleList are set to NULL. However you may restrict the GRM calculation by specifying a vector of sample IDs or a vector of SNP IDs.
 \\
 \\
 Load and calculate a gene expression relatedness matrix (GXM) with the following function:
 \begin{Schunk}
-
 <<>>=
-gxmMat <- make_GXM(expFile = expFile)
+gxmMat <- make_GXM(expFile = expressionFile)
 @
 
 \end{Schunk}
@@ -102,7 +80,6 @@ Similarly, by default, gxmFilePrefix is set to NULL, however if specified, this 
 \end{center}
 Additional convenience functions are included to perform principal components analysis (PCA):
 \begin{Schunk}
-
 <<>>=
 pcMatXM <- make_PCs_irlba(gxmMat, n.top = 10)
 

@@ -118,9 +118,9 @@ read_GRMBin <- function(prefix, size = 4){
   }
 
   ## open file connections and read in data
-  BinFileName <- paste(prefix,".grm.bin",sep="")
-  NFileName <- paste(prefix,".grm.N.bin",sep="")
-  IDFileName <- paste(prefix,".grm.id",sep="")
+  BinFileName <- paste(prefix,".bin",sep="")
+  NFileName <- paste(prefix,".N.bin",sep="")
+  IDFileName <- paste(prefix,".id",sep="")
   id <- read.table(IDFileName)
   n <- dim(id)[1]
   BinFile <- file(BinFileName, "rb")
