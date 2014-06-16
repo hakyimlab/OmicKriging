@@ -43,10 +43,13 @@ Define paths to the genetic relatedness (GCTA binary format), gene expression, a
 <<>>=
 library(OmicKriging)
 
-binaryFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_genotypes.grm.bin")
+binaryFile <- system.file(package = "OmicKriging",
+                "doc/vignette_data/ig_genotypes.grm.bin")
 binaryFileBase <- substr(binaryFile,1, nchar(binaryFile) - 4)
-expressionFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_gene_subset.txt.gz") 
-phenotypeFile <- system.file(package = "OmicKriging", "doc/vignette_data/ig_pheno.txt") 
+expressionFile <- system.file(package = "OmicKriging",
+                    "doc/vignette_data/ig_gene_subset.txt.gz") 
+phenotypeFile <- system.file(package = "OmicKriging",
+                  "doc/vignette_data/ig_pheno.txt") 
 @
 
 \end{Schunk}
