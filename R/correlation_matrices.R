@@ -16,7 +16,7 @@
 make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
 
   ## data input
-  genedata <- read.delim(expFile, sep="", as.is=T, header=T)
+  genedata <- read.delim(expFile, sep=" ", as.is=T, header=T)
   if(!is.null(idfile)) {
     iddata <- read.table(idfile,header=T,as.is=T)
     genedata <- merge(iddata,genedata,by.x=c("FID","IID"),by.y=c("FID","IID"))
@@ -31,7 +31,7 @@ make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
   genemat[is.na(genemat)] <- 0.0
    
   ## compute cor mat
-  cormat <- cor(genemat)
+  cormat <- cor(t(genemat))
   
   ## give it row names
   colnames(cormat) <- cordata.id[,2]
