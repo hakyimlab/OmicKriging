@@ -13,7 +13,7 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \maketitle
-Method citation: Wheeler HE, et al. (2013) Poly-Omic Prediction of Complex Traits: OmicKriging. arXiv:1303.1788 \url{http://arxiv.org/abs/1303.1788}
+Method citation: Wheeler HE, Aquino-Michaels K, Gamazon ER, Trubetskoy VV, Dolan ME, Huang RS, Cox NJ, Im HK. Poly-Omic Prediction of Complex Traits: OmicKriging. Genet Epidemiol. 2014 May 2. doi: 10.1002/gepi.21808. 
 \begin{center}
   \line(1,0){250}
 \end{center}
