@@ -173,7 +173,7 @@ read_GRMBin <- function(prefix, size = 4){
 
   ## create the full symmetric correlation matrix
   X <- diag(diag.elem)
-  X[ lower.tri(X, diag = FALSE) ] <- off.diag.elem
+  X[ upper.tri(X, diag = FALSE) ] <- off.diag.elem
   X <- X + t(X) - diag(diag(X)) 
 
   ## add sample IDs to rownames and colnames
