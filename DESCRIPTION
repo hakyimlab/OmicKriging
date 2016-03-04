@@ -1,8 +1,8 @@
 Package: OmicKriging
 Type: Package
 Title: OmicKriging for Phenotypic Prediction
-Version: 1.3
-Date: 2013-09-26
+Version: 1.4
+Date: 2016-03-03
 Author: Hae Kyung Im, Heather E. Wheeler, Keston Aquino Michaels, Vassily
     Trubetskoy
 Maintainer: Hae Kyung Im <haky@uchicago.edu>
@@ -19,10 +19,12 @@ Description: This package provides functions to generate a correlation matrix
 License: GPL (>=3)
 Depends:
     R(>= 2.15.1),
-    doParallel,
+    doParallel
 Imports:
     ROCR,
-    irlba
+    irlba,
+    parallel,
+    foreach
 Collate:
     'correlation_matrices.R'
     'input_pheno_GT.R'
