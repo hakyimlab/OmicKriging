@@ -108,6 +108,10 @@ okriging <- function(idtest,idtrain=NULL,corlist,H2vec,pheno,phenoname,Xcova=NUL
 #' @import parallel
 #' @import foreach
 #' @import ROCR
+#' @importFrom utils flush.console
+#' @importFrom stats glm 
+#' @importFrom stats binomial 
+#' @importFrom stats lm 
 #' @export
 krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, covar.mat = NULL, nfold = 10, ncore = "all", verbose = FALSE, ...) {
   ## dependencies
