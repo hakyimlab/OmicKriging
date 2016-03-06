@@ -1,9 +1,10 @@
-OmicKriging update
+Update
 ==================
 
 Code and documentation for a updated release to the Omic Kriging R package. Focused primarily on improving efficiency, improving ease of use, and reducing dependencies.
 
 [Link to latest CRAN release](http://cran.r-project.org/web/packages/OmicKriging/index.html)
+[Link to github version](https://github.com/hakyimlab/OmicKriging)
 
 ## Description
 

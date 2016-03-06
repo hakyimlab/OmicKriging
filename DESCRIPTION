@@ -1,12 +1,12 @@
 Package: OmicKriging
 Type: Package
-Title: OmicKriging for Phenotypic Prediction
-Version: 1.4
+Title: Poly-Omic Prediction of Complex TRaits
+Version: 1.4.0
 Date: 2016-03-03
 Author: Hae Kyung Im, Heather E. Wheeler, Keston Aquino Michaels, Vassily
     Trubetskoy
 Maintainer: Hae Kyung Im <haky@uchicago.edu>
-Description: This package provides functions to generate a correlation matrix
+Description: It provides functions to generate a correlation matrix
     from a genetic dataset and to use this matrix to predict the phenotype of an
     individual by using the phenotypes of the remaining individuals through
     kriging. Kriging is a geostatistical method for optimal prediction or best
