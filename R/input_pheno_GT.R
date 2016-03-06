@@ -12,6 +12,7 @@
 #'
 #' @keywords input
 #'
+#' @importFrom utils read.table
 #' @export
 load_sample_data <- function(phenoFile, main.pheno) {
 
