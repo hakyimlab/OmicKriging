@@ -212,8 +212,9 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
     cat("Area under the ROC curve:", auc(res$Ypred,res$Ytest) %&% "...", "\n")
     convertpheno <- res$Ytest
     uniconvertpheno <- unique(convertpheno)
-    convertpheno[convertpheno == uniconvertpheno[2]] = 0
-    convertpheno[convertpheno == uniconvertpheno[1]] = 1
+    #convert 1=ctl, 2=case to 0=ctl, 1=case for logistic regression
+    convertpheno[convertpheno == uniconvertpheno[1]] = 0
+    convertpheno[convertpheno == uniconvertpheno[2]] = 1
     sum <- summary(glm(convertpheno ~ res$Ypred, family = binomial))
     print(sum)
     } else {
