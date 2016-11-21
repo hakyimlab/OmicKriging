@@ -25,7 +25,7 @@
 make_GXM <- function(expFile = NULL, gxmFilePrefix = NULL, idfile = NULL) {
 
   ## data input
-  genedata <- read.delim(expFile, sep=" ", as.is=T, header=T)
+  genedata <- read.delim(expFile, sep="\t", as.is=T, header=T)
   if(!is.null(idfile)) {
     iddata <- read.table(idfile,header=T,as.is=T)
     genedata <- merge(iddata,genedata,by.x=c("FID","IID"),by.y=c("FID","IID"))
@@ -235,8 +235,8 @@ write_GRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
   ## pull diagonal elements
   diag.elem <- diag(X)
 
-  ## pull lower triangular elements
-  off.diag.elem <- X[lower.tri(X, diag=FALSE)]
+  ## pull upper triangular elements (column major order)
+  off.diag.elem <- X[upper.tri(X, diag=FALSE)]
 
   ## collapse GRM into vector
   i <- sapply(1:n, sum_i)
@@ -248,12 +248,14 @@ write_GRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
   BinFile <- file(BinFileName, "wb")
   NFile <- file(NFileName, "wb")
   writeBin(con = BinFile, collapsed.grm, size = size)
-  writeBin(con = NFile, n.snps, size = size )
+  writeBin(con = NFile, rep(n.snps, n*(n+1)/2), size = size )
   close(BinFile)
   close(NFile)
 
   ## write sample ID file -- we are dropping sample family IDs here
-  write.table(cbind(id, id), file = IDFileName)
+  write.table(cbind(id, id), file = IDFileName, col.names=FALSE,
+    row.names=FALSE, quote=FALSE)
+)
 
 }
 
