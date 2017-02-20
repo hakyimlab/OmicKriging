@@ -255,7 +255,6 @@ write_GRMBin <- function(X, n.snps = 0.0, prefix, size = 4) {
   ## write sample ID file -- we are dropping sample family IDs here
   write.table(cbind(id, id), file = IDFileName, col.names=FALSE,
     row.names=FALSE, quote=FALSE)
-)
 
 }
 
