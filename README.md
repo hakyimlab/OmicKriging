@@ -16,3 +16,7 @@ More updated versions can be found [here](https://github.com/hakyimlab/OmicKrigi
   * Heather E. Wheeler
   * Keston Aquino Michaels
   * Vassily Trubetskoy
+
+Please cite:
+H. E. Wheeler, K. Aquino-Michaels, E. R. Gamazon, V. V. Trubetskoy, M. E. Dolan, R. S. Huang, N. J. Cox, and H. K. Im, “Poly-Omic Prediction of Complex Traits: OmicKriging.,” Genetic epidemiology, vol. 38, no. 5, pp. 402–415, May 2014.
+http://onlinelibrary.wiley.com/doi/10.1002/gepi.21808/abstract
