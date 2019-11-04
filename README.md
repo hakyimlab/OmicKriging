@@ -13,7 +13,9 @@ More updated versions can be found [here](https://github.com/hakyimlab/OmicKrigi
 ## Installation from Github
 
 > install.packages(“devtools”)
+
 > library(devtools)
+
 > install_github(“hakyimlab/omickriging”)
 
 
