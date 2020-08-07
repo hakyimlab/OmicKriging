@@ -113,7 +113,7 @@ okriging <- function(idtest,idtrain=NULL,corlist,H2vec,pheno,phenoname,Xcova=NUL
 #' @importFrom stats binomial 
 #' @importFrom stats lm 
 #' @export
-krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, covar.mat = NULL, nfold = 10, ncore = "all", verbose = FALSE, ...) {
+krigr_cross_validation <- function(cor.list, pheno.df, pheno.id, h2.vec, covar.mat = NULL, nfold = 10, ncore = "all", verbose = FALSE, ...) {
   ## dependencies
   ## functions
   '%&%' <- function(a, b) paste(a, b, sep="")
@@ -188,11 +188,11 @@ krigr_cross_validation <- function(cor.list, pheno.df, pheno.id = 1, h2.vec, cov
       idtrain <- as.factor(group.df$sample.id[!(group.df$sample.id %in% idtest)])
       
       ## run kriging
-      okriging(idtest, idtrain, 
+      okriging(idtest, idtrain,
             corlist <- cor.list, 
             H2vec <- h2.vec,
             pheno <- pheno.df,
-            phenoname <- colnames(pheno.df)[pheno.id + 2],
+            phenoname <- pheno.id,
             Xcova <- covar.mat
             )
       }
